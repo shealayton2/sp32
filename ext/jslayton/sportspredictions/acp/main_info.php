@@ -7,13 +7,6 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */
-/**
-* @ignore
-*/
-
-/**
-* @package module_install
-*/
 
 namespace jslayton\sportspredictions\acp;
 
@@ -28,35 +21,35 @@ class main_info
 				'overview' => array(
 					'title' => 'ACP_SPORTS_PREDICTIONS',
 					'auth' => 'ext_jslayton/sportspredictions',
-					'cat' => array('ACP_DOT_MODS')
+					'cat' => array('ACP_SPORTS_PREDICTIONS')
 				),
 				'configuration' => array(
-					'title' => 'ACP_SPORTS_PREDICTIONS_CONFIGURATION', 
+					'title' => 'ACP_SP_CONFIGURATION', 
 					'auth' => 'ext_jslayton/sportspredictions',
 					'cat' => array('ACP_SPORTS_PREDICTIONS')
 				),
 				'leagues' => array(
-					'title' => 'ACP_SPORTS_PREDICTIONS_LEAGUES', 
+					'title' => 'ACP_SP_LEAGUES', 
 					'auth' => 'ext_jslayton/sportspredictions',
 					'cat' => array('ACP_SPORTS_PREDICTIONS')
 				),
 				'teams' => array(
-					'title' => 'ACP_SPORTS_PREDICTIONS_TEAMS', 
+					'title' => 'ACP_SP_TEAMS', 
 					'auth' => 'ext_jslayton/sportspredictions',
 					'cat' => array('ACP_SPORTS_PREDICTIONS')
 				),
 				'games' => array(
-					'title' => 'ACP_SPORTS_PREDICTIONS_GAMES',
+					'title' => 'ACP_SP_GAMES',
 					'auth' => 'ext_jslayton/sportspredictions',
 					'cat' => array('ACP_SPORTS_PREDICTIONS')
 				),
 				'scores' => array(
-					'title' => 'ACP_SPORTS_PREDICTIONS_SCORES', 
+					'title' => 'ACP_SP_SCORES', 
 					'auth' => 'ext_jslayton/sportspredictions',
 					'cat' => array('ACP_SPORTS_PREDICTIONS')
 				),
 				'predictions' => array(
-					'title' => 'ACP_SPORTS_PREDICTIONS_PREDICTIONS', 
+					'title' => 'ACP_SP_PREDICTIONS', 
 					'auth' => 'ext_jslayton/sportspredictions',
 					'cat' => array('ACP_SPORTS_PREDICTIONS')
 				),

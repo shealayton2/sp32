@@ -57,6 +57,12 @@ class sportspredictions
 		$this->helper = $helper;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
+		
+		@define('SP_GAME_TABLE', 'phpbb_sp_games');
+		@define('SP_CONFIG_TABLE', 'phpbb_sp_config');
+		@define('SP_TEAM_TABLE', 'phpbb_sp_teams');
+		@define('SP_PREDICTION_TABLE', 'phpbb_sp_predictions');
+		@define('SP_LEAGUE_TABLE', 'phpbb_sp_leagues');
 	
 	/*function sportspredictions($include_mode = 'user')
 	{
@@ -64,7 +70,7 @@ class sportspredictions
 		
 		*/
 		
-		$this->in_admin = ($include_mode == 'admin') ? true : false;
+		//$this->in_admin = ($include_mode == 'admin') ? true : false;
 		
 		$this->load_config();
 		$this->load_leagues_array();

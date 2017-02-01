@@ -8,10 +8,12 @@ class install_acp_module extends \phpbb\db\migration\migration
      * If our config variable already exists in the db
      * skip this migration.
      */
-    public function effectively_installed()
+    /*
+	public function effectively_installed()
     {
         return isset($this->config['jslayton_sportspredictions_installed']);
     }
+	*/
 
     /**
      * This migration depends on phpBB's v314 migration
