@@ -1,0 +1,26 @@
+{
+    "name": "jslayton/sportspredictions",
+    "type": "phpbb-extension",
+    "description": "Sports Predictions Extension for phpBB 3.2",
+    "homepage": "http://www.shealayton.com",
+    "version": "1.0.0",
+    "time": "2017-01-24",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Shea Layton",
+            "email": "shea@shealayton.com",
+            "homepage": "http://www.shealayton.com",
+            "role": "Lead Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "extra": {
+        "display-name": "phpBB 3.2 Sports Predictions Extension",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.1.0-RC2,<3.2.*@dev"
+        }
+    }
+ }

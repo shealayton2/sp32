@@ -1,0 +1,65 @@
+<!-- INCLUDE overall_header.html -->
+
+<h2>{PAGE_TITLE}</h2>
+
+<!-- INCLUDE sportspredictions/nav.html -->
+
+<table id="sportspredictions_container">
+	<tr>
+		<td class="sportspredictions_fullcol">
+			<h3 class="sportspredictions_title">{L_LEADERBOARD_HEADER} {LEAGUE_NAME}</h3>
+			<div class="forabg"> 
+				<div class="inner"><span class="corners-top"><span></span></span>
+					<table class="table1" cellspacing="1">
+						<thead>
+							<tr>
+								<th style="text-align: center;">#</th>
+								<th class="name" style="text-align: left;"><a href="{U_SORT_USERNAME}">{L_USERNAME}</a></th>
+								<th style="text-align: center;"><a href="{U_SORT_WINS}">{L_WINS}</a></th>
+								<th style="text-align: center;"><a href="{U_SORT_LOSSES}">{L_LOSSES}</a></th>
+								<th style="text-align: center;"><a href="{U_SORT_WINPERC}">{L_WIN_PERC}</a></th>
+								<th style="text-align: center;"><a href="{U_SORT_POINTDIFF}">{L_POINT_DIFFERENTIAL}</a></th>
+								<th style="text-align: center;"><a href="{U_SORT_POINTS}">{L_POINTS}</a></th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- BEGIN leaderboard --> 
+								<tr class="<!-- IF leaderboard.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->"> 
+									<td class="sp_lb_position<!-- IF leaderboard.HIGHLIGHT --> sp_highlight<!-- ENDIF -->">{leaderboard.POSITION}</td>
+									<td class="sp_lb_username<!-- IF leaderboard.HIGHLIGHT --> sp_highlight<!-- ENDIF -->"><a href="{leaderboard.STATS_LINK}">{leaderboard.USERNAME}</a></td>
+									<td class="sp_lb_values<!-- IF leaderboard.HIGHLIGHT --> sp_highlight<!-- ENDIF -->">{leaderboard.WINS}</td>
+									<td class="sp_lb_values<!-- IF leaderboard.HIGHLIGHT --> sp_highlight<!-- ENDIF -->">{leaderboard.LOSSES}</td>
+									<td class="sp_lb_values<!-- IF leaderboard.HIGHLIGHT --> sp_highlight<!-- ENDIF -->">{leaderboard.WINPERC}{L_WIN_PERC_SIGN}</td>
+									<td class="sp_lb_values<!-- IF leaderboard.HIGHLIGHT --> sp_highlight<!-- ENDIF -->">{leaderboard.POINTDIFF}</td>
+									<td class="sp_lb_values<!-- IF leaderboard.HIGHLIGHT --> sp_highlight<!-- ENDIF -->">{leaderboard.POINTS}</td>
+								</tr>
+							<!-- BEGINELSE -->
+								<tr class="bg3">
+									<td colspan="7" align="center">{L_NO_LEADERBOARD_DATA}</td>
+								</tr>
+							<!-- END leaderboard -->
+						</tbody>
+					</table>
+				<span class="corners-bottom"><span></span></span></div>
+			</div>
+			<div class="panel bg2"> 
+				<div class="inner"><span class="corners-top"><span></span></span>
+					<h3>{L_LEADERBOARD_KEY}</h3>
+					<table width="100%">
+						<tr>
+							<td style="width: 33%;">
+							{CORRECT_PREDICTION_EXPLAIN}<br />
+                            +1 point(s) for correct tip in bonus game<br />
+							{INCORRECT_PREDICTION_EXPLAIN}<br />
+-0 point(s) in the event of a draw
+							</td>
+							<td style="vertical-align: top;">&nbsp;</td>
+						</tr>
+					</table>
+				<span class="corners-bottom"><span></span></span></div> 
+			</div>
+		</td>
+	</tr>
+</table>
+
+<!-- INCLUDE overall_footer.html -->

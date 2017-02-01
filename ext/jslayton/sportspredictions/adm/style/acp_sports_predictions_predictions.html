@@ -1,0 +1,140 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_SPORTS_PREDICTIONS} : {L_ACP_SP_PREDICTIONS}</h1>
+
+<!-- IF S_VIEW_PREDICTIONS_SUBMIT -->
+
+	<form id="acp_sp_predictions" method="post" action="{U_ACTION}">
+	
+	<!-- IF .empty_predictions -->
+		<h2>{L_ACP_SP_NON_PREDICTED_GAMES}<!-- IF S_BY_USERID --> {L_FOR} {SP_USERNAME}<!-- ENDIF --></h2>
+
+		<fieldset class="tabulated">
+		<legend>{L_ACP_SP_SCORES}</legend>
+		<table cellspacing="1" id="down">
+			<thead>
+				<tr>
+					<th style="text-align: center;">{L_GAME_TIME}</th>
+					<th style="text-align: center;">{L_AWAY_TEAM}</th>
+					<th style="text-align: center; width: 100px;" colspan="3">{L_SP_YOUR_PREDICTIONS}</th>
+					<th style="text-align: center;">{L_HOME_TEAM}</th>
+					<th style="text-align: center;">{L_ACP_SP_FINAL_SCORE}</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- BEGIN empty_predictions --> 
+				<tr class="<!-- IF empty_predictions.S_ROW_COUNT is even -->row1<!-- ELSE -->row2<!-- ENDIF -->"> 
+					<td style="text-align: center;">{empty_predictions.GAMETIME}</td>
+					<td style="text-align: center;">{empty_predictions.AWAY_TEAM}</td>
+					<td style="text-align: center;"><input class="inputbox autowidth" id="prediction_ary[{empty_predictions.GAME_ID}][{empty_predictions.USER_ID}]['away']" type="text" name="prediction_ary[{empty_predictions.GAME_ID}][{empty_predictions.USER_ID}][away]" value="{empty_predictions.AWAY_PREDICTION}" size="3" style="text-align: center;" /></td>
+					<td style="text-align: center;">{L_SP_VS}</td>
+					<td style="text-align: center;"><input class="inputbox autowidth" id="prediction_ary[{empty_predictions.GAME_ID}][{empty_predictions.USER_ID}]['home']" type="text" name="prediction_ary[{empty_predictions.GAME_ID}][{empty_predictions.USER_ID}][home]" value="{empty_predictions.HOME_PREDICTION}" size="3" style="text-align: center;" /></td>
+					<td style="text-align: center;">{empty_predictions.HOME_TEAM}</td>
+					<!-- IF empty_predictions.AWAY_SCORE != '' && empty_predictions.HOME_SCORE != '' -->
+						<!-- IF empty_predictions.AWAY_SCORE == empty_predictions.HOME_SCORE -->
+							<td style="text-align: center;">{L_SP_TIE} ({empty_predictions.AWAY_SCORE}{L_SP_DASH}{empty_predictions.HOME_SCORE})</td>
+						<!-- ELSEIF empty_predictions.AWAY_SCORE > empty_predictions.HOME_SCORE -->
+							<td style="text-align: center;">{empty_predictions.AWAY_TEAM} {L_WINS} ({empty_predictions.AWAY_SCORE}{L_SP_DASH}{empty_predictions.HOME_SCORE})</td>
+						<!-- ELSE -->
+							<td style="text-align: center;">{empty_predictions.HOME_TEAM} {L_WINS} ({empty_predictions.HOME_SCORE}{L_SP_DASH}{empty_predictions.AWAY_SCORE})</td>
+						<!-- ENDIF -->
+					<!-- ELSE -->
+						<td>&nbsp;</td>
+					<!-- ENDIF -->
+				</tr>
+			<!-- END empty_predictions -->
+			</tbody>
+		</table>
+		</fieldset>
+	<!-- ENDIF -->
+	
+	<h2>{L_ACP_SP_PREDICTED_GAMES}<!-- IF S_BY_USERID --> {L_FOR} {SP_USERNAME}<!-- ENDIF --></h2>
+
+	<fieldset class="tabulated">
+	<legend>{L_ACP_SP_SCORES}</legend>
+	<table cellspacing="1" id="down">
+		<thead>
+			<tr>
+				<!-- IF not S_BY_USERID -->
+					<th style="text-align: center;">{L_USERNAME}</th>
+				<!-- ENDIF -->
+				<th style="text-align: center;">{L_GAME_TIME}</th>
+				<th style="text-align: center;">{L_AWAY_TEAM}</th>
+				<th style="text-align: center; width: 100px;" colspan="3">{L_SP_YOUR_PREDICTIONS}</th>
+				<th style="text-align: center;">{L_HOME_TEAM}</th>
+				<th style="text-align: center;">{L_ACP_SP_FINAL_SCORE}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN full_predictions --> 
+			<tr class="<!-- IF full_predictions.S_ROW_COUNT is even -->row1<!-- ELSE -->row2<!-- ENDIF -->">
+				<!-- IF not S_BY_USERID -->
+					<td style="text-align: center;">{full_predictions.USERNAME}</td>
+				<!-- ENDIF -->
+				<td style="text-align: center;">{full_predictions.GAMETIME}</td>
+				<td style="text-align: center;">{full_predictions.AWAY_TEAM}</td>
+				<td style="text-align: center;"><input class="inputbox autowidth" id="prediction_ary[{full_predictions.GAME_ID}][{full_predictions.USER_ID}]['away']" type="text" name="prediction_ary[{full_predictions.GAME_ID}][{full_predictions.USER_ID}][away]" value="{full_predictions.AWAY_PREDICTION}" size="3" style="text-align: center;" /></td>
+				<td style="text-align: center;">{L_SP_VS}</td>
+				<td style="text-align: center;"><input class="inputbox autowidth" id="prediction_ary[{full_predictions.GAME_ID}][{full_predictions.USER_ID}]['home']" type="text" name="prediction_ary[{full_predictions.GAME_ID}][{full_predictions.USER_ID}][home]" value="{full_predictions.HOME_PREDICTION}" size="3" style="text-align: center;" /></td>
+				<td style="text-align: center;">{full_predictions.HOME_TEAM}</td>
+				<!-- IF full_predictions.AWAY_SCORE != '' && full_predictions.HOME_SCORE != '' -->
+					<!-- IF full_predictions.AWAY_SCORE == full_predictions.HOME_SCORE -->
+							<td style="text-align: center;">{L_SP_TIE} ({full_predictions.AWAY_SCORE}{L_SP_DASH}{full_predictions.HOME_SCORE})</td>
+					<!-- ELSEIF full_predictions.AWAY_SCORE > full_predictions.HOME_SCORE -->
+						<td style="text-align: center;">{full_predictions.AWAY_TEAM} {L_WINS} ({full_predictions.AWAY_SCORE}{L_SP_DASH}{full_predictions.HOME_SCORE})</td>
+					<!-- ELSE -->
+						<td style="text-align: center;">{full_predictions.HOME_TEAM} {L_WINS} ({full_predictions.HOME_SCORE}{L_SP_DASH}{full_predictions.AWAY_SCORE})</td>
+					<!-- ENDIF -->
+				<!-- ELSE -->
+					<td>&nbsp;</td>
+				<!-- ENDIF -->
+			</tr>
+		<!-- END full_predictions -->
+		</tbody>
+	</table>
+	{S_HIDDEN_FIELDS}
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="save" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		{S_FORM_TOKEN}
+	</p>
+	</fieldset>
+	</form>
+
+<!-- ELSE -->
+
+	<!-- IF S_SHOW_LEAGUE_BOX -->
+		<form id="league_select" method="post" action="{U_ACTION}">
+		<fieldset class="quick">
+			{L_CURRENT_LEAGUE}:&nbsp;<select id="league_id" name="league_id" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">{S_LEAGUE_OPTIONS}</select>&nbsp;<input class="button2" name="change_league" type="submit" value="{L_CHANGE_LEAGUE}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+		</form>
+	<!-- ENDIF -->
+
+	<form id="acp_sp_predictions" method="post" action="{U_ACTION}">
+	<fieldset>
+		<legend>{L_ACP_SP_SEARCH}</legend>
+		<p>{L_ACP_SP_PREDICTION_SEARCH_EXPLAIN}</p>
+		<dl>
+			<dt><label for="user_id">{L_USERNAME}</label><br /><span>{L_ACP_SEARCH_PREDICTIONS_BY_USER}</span></dt>
+			<dd><select id="user_id" name="user_id">{S_USER_OPTIONS}</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="game_id">{L_GAME}</label><br /><span>{L_ACP_SEARCH_PREDICTIONS_BY_GAME}</span></dt>
+			<dd><select id="game_id" name="game_id">{S_GAME_OPTIONS}</select></dd>
+		</dl>
+		<p class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="search" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		</p>
+		{S_HIDDEN_FIELDS}
+		{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

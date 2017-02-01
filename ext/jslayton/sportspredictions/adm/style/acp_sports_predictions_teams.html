@@ -1,0 +1,130 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_SPORTS_PREDICTIONS} : {L_ACP_SP_TEAMS}</h1>
+
+<!-- IF S_MULTIADD_TEAM -->
+
+	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
+
+	<form id="acp_sp_teams" method="post" action="{U_ACTION}">
+	<fieldset>
+		<legend>{L_ACP_SP_ADD_TEAMS}</legend>
+		<p>{L_ACP_SP_ADD_TEAMS_EXPLAIN}</p>
+		<dl>
+			<dt><label for="league_id">{L_LEAGUE_NAME}</label></dt>
+			<dd><select id="league_id" name="league_id">{S_LEAGUE_OPTIONS}</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="team_name">{L_TEAM_NAME}</label><br /><span>{L_MULTIADD_TEAM_EXPLAIN}</span></dt>
+			<dd><textarea id="team_names" name="team_names" rows="10"></textarea></dd>
+		</dl>
+	</fieldset>
+	{S_HIDDEN_FIELDS}
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="multisave" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		{S_FORM_TOKEN}
+	</p>
+	</form>
+
+<!-- ELSEIF S_EDIT_TEAM -->
+
+	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
+
+	<form id="acp_sp_teams" method="post" action="{U_ACTION}" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{L_ACP_SP_ADD_TEAMS}</legend>
+		<p>{L_ACP_SP_ADD_TEAMS_EXPLAIN}</p>
+		<dl>
+			<dt><label for="league_id">{L_LEAGUE_NAME}</label></dt>
+			<dd><select id="league_id" name="league_id">{S_LEAGUE_OPTIONS}</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="team_name">{L_TEAM_NAME}</label></dt>
+			<dd><input id="team_name" type="text" name="team_name" value="{TEAM_NAME}" maxlength="255" /></dd>
+		</dl>
+		<!-- IF TEAM_LOGO != '' -->
+			<dl>
+				<dt><label>{L_SP_CURRENT_LOGO}</label><br /><span>{L_TEAM_LOGO_EXPLAIN}</span></dt>
+				<dd><img src="{TEAM_LOGO}" alt="{TEAM_NAME}" /></dd>
+				<dd><input id="remove_logo" type="checkbox" name="remove_logo" />&nbsp;{L_REMOVE_LOGO}</dd>
+			</dl>
+		<!-- ENDIF -->
+		<dl>
+			<dt><label for="team_logo">{L_SP_NEW_LOGO}</label></dt>
+			<dd><input id="team_logo" type="file" name="team_logo" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="show_results">{L_SP_SHOW_RESULTS}</label></dt>
+			<dd>
+				<input id="show_results_yes" type="radio" name="show_results" value="1" <!-- IF SHOW_RESULTS === '1' -->checked="checked"<!-- ENDIF --> />&nbsp;{L_YES}
+				&nbsp;
+				<input id="show_results_no" type="radio" name="show_results" value="0" <!-- IF SHOW_RESULTS === '0' -->checked="checked"<!-- ENDIF -->/>&nbsp;{L_NO}
+			</dd>
+		</dl>
+	</fieldset>
+	{S_HIDDEN_FIELDS}
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="save" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		{S_FORM_TOKEN}
+	</p>
+	</form>
+
+<!-- ELSE -->
+
+	<!--<p>{L_ACP_SP_TEAMS_EXPLAIN}</p>-->
+	
+	<!-- IF S_SHOW_LEAGUE_BOX -->
+		<form id="league_select" method="post" action="{U_ACTION}">
+		<fieldset class="quick">
+			{L_CURRENT_LEAGUE}:&nbsp;<select id="league_id" name="league_id" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">{S_LEAGUE_OPTIONS}</select>&nbsp;<input class="button2" name="change_league" type="submit" value="{L_CHANGE_LEAGUE}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+		</form>
+	<!-- ENDIF -->
+	
+	<h2>Teams for {LEAGUE_NAME}</h2>
+
+	<form id="acp_sp_teams" method="post" action="{U_ACTION}">
+	<fieldset class="tabulated">
+	<legend>{L_ACP_TEAMS}</legend>
+	<table cellspacing="1" id="down">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>{L_TEAM_NAME}</th>
+				<th style="text-align: center;">{L_WIN_LOSS_ABBR}</th>
+				<th style="text-align: center;">{L_ACTION}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN teams -->
+			<!-- IF teams.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+				<td style="text-align: center; width: 30px;"><!-- IF teams.TEAM_LOGO_THUMBNAIL != '' --><img src="{teams.TEAM_LOGO_THUMBNAIL}" alt="{teams.TEAM_NAME}" /><!-- ELSE -->&nbsp;<!-- ENDIF --></td>
+				<td style="text-align: left;">{teams.TEAM_NAME}</td>
+				<td style="text-align: center; width: 50px;">{teams.TEAM_RECORD}</td>
+				<td style="text-align: right; width: 40px;"><a href="{teams.U_EDIT}">{ICON_EDIT}</a> <a href="{teams.U_DELETE}">{ICON_DELETE}</a></td>
+			</tr>
+		<!-- BEGINELSE -->
+			<tr class="row3">
+				<td colspan="3">{L_ACP_NO_ITEMS}</td>
+			</tr>
+		<!-- END teams -->
+		</tbody>
+	</table>
+	<p class="quick">
+		<input class="button2" name="multiadd" type="submit" value="{L_ACP_ADD_MULTIPLE_TEAMS}" />
+		&nbsp;
+		<input class="button2" name="add" type="submit" value="{L_ACP_ADD_NEW_TEAM}" />
+	</p>
+	{S_HIDDEN_FIELDS}
+	{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,94 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_SPORTS_PREDICTIONS}</h1>
+
+<p>{L_ACP_SP_EXPLAIN}</p>
+
+<!-- IF S_SHOW_LEAGUE_BOX -->
+	<form id="league_select" method="post" action="{U_ACTION}">
+	<fieldset class="quick">
+		{L_CURRENT_LEAGUE}:&nbsp;<select id="league_id" name="league_id" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">{S_LEAGUE_OPTIONS}</select>&nbsp;<input class="button2" name="change_league" type="submit" value="{L_CHANGE_LEAGUE}" />
+		{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+<!-- ENDIF -->
+
+<h3 class="sportspredictions_title">{L_LEADERBOARD_HEADER} {LEAGUE_NAME}</h3>
+<table id="down" cellspacing="1">
+	<thead>
+		<tr>
+			<th style="text-align: center; width: 10%;">#</th>
+			<th style="text-align: left; width: 40%;"><a href="{U_SORT_USERNAME}">{L_USERNAME}</a></th>
+			<th style="text-align: center; width: 10%;"><a href="{U_SORT_WINS}">{L_WINS}</a></th>
+			<th style="text-align: center; width: 10%;"><a href="{U_SORT_LOSSES}">{L_LOSSES}</a></th>
+			<th style="text-align: center; width: 10%;"><a href="{U_SORT_WINPERC}">{L_WIN_PERC}</a></th>
+			<th style="text-align: center; width: 10%;"><a href="{U_SORT_POINTDIFF}">{L_POINT_DIFFERENTIAL}</a></th>
+			<th style="text-align: center; width: 10%;"><a href="{U_SORT_POINTS}">{L_POINTS}</a></th>
+		</tr>
+	</thead>
+	<tbody>
+		<!-- BEGIN leaderboard --> 
+			<tr class="<!-- IF leaderboard.S_ROW_COUNT is even -->row1<!-- ELSE -->row2<!-- ENDIF -->"> 
+				<td style="text-align: center;">{leaderboard.POSITION}</td>
+				<td>{leaderboard.USERNAME}</td>
+				<td style="text-align: center;">{leaderboard.WINS}</td>
+				<td style="text-align: center;">{leaderboard.LOSSES}</td>
+				<td style="text-align: center;">{leaderboard.WINPERC}{L_WIN_PERC_SIGN}</td>
+				<td style="text-align: center;">{leaderboard.POINTDIFF}</td>
+				<td style="text-align: center;">{leaderboard.POINTS}</td>
+			</tr>
+		<!-- BEGINELSE -->
+			<tr class="row3">
+				<td colspan="7" align="center">{L_NO_LEADERBOARD_DATA}</td>
+			</tr>
+		<!-- END leaderboard -->
+	</tbody>
+</table>
+<!-- IF PAGINATION -->
+	<div class="pagination">
+		<a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+	</div>
+<!-- ENDIF -->
+
+<h2>{L_ACP_SP_PENDING_GAMES}</h2>
+<p>{L_ACP_SP_PENDING_GAMES_EXPLAIN}</p>
+
+<form id="acp_sp_scores" method="post" action="{U_PENDING_SCORES_ACTION}">
+<fieldset class="tabulated">
+<legend>{L_ACP_SP_SCORES}</legend>
+<table cellspacing="1" id="down">
+	<thead>
+		<tr>
+			<th>{L_GAME_TIME}</th>
+			<th style="text-align: center;">{L_AWAY_TEAM}</th>
+			<th style="width: 40px;">&nbsp;</th>
+			<th style="text-align: center;">{L_HOME_TEAM}</th>
+		</tr>
+	</thead>
+	<tbody>
+	<!-- BEGIN pending_games -->
+		<!-- IF teams.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+			<td style="text-align: left;">{pending_games.GAMETIME}</td>
+			<td style="text-align: center;">{pending_games.AWAY_TEAM}</td>
+			<td style="text-align: center;">{L_SP_VS}</td>
+			<td style="text-align: center;">{pending_games.HOME_TEAM}</td>
+		</tr>
+	<!-- BEGINELSE -->
+		<tr class="row3">
+			<td colspan="5">{L_ACP_SP_NO_PENDING_GAMES}</td>
+		</tr>
+	<!-- END pending_games -->
+	</tbody>
+</table>
+<!-- IF .pending_games -->
+	<p class="quick">
+		<input class="button2" name="add" type="submit" value="{L_ACP_ADD_SCORES}" />
+	</p>
+<!-- ENDIF -->
+{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,82 @@
+<!-- INCLUDE overall_header.html -->
+
+<h2>{PAGE_TITLE}</h2>
+
+<!-- INCLUDE sportspredictions/nav.html -->
+
+<table id="sportspredictions_container">
+	<tr>
+		<td class="sportspredictions_fullcol">
+			<h3 class="sportspredictions_title">{L_PREDICTED_GAMES_INCOMPLETE}</h3>
+			<div class="forabg"> 
+				<div class="inner"><span class="corners-top"><span></span></span>
+					<table class="table1" cellspacing="1">
+						<thead>
+							<tr>
+								<th>{L_GAME_TIME}</th>
+								<th style="text-align: center;">{L_HOME}</th>
+								<th>&nbsp;</th>
+								<th style="text-align: center;">{L_AWAY}</th>
+								<th style="text-align: center;">{L_USERS_PREDICTION}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- BEGIN incomplete_games --> 
+							<tr class="<!-- IF incomplete_games.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+								<td>{incomplete_games.GAME_TIME}</td>
+								<td style="text-align: center;">{incomplete_games.HOME_TEAM}</td>
+								<td style="text-align: center;">{L_SP_VS}</td>
+								<td style="text-align: center;">{incomplete_games.AWAY_TEAM}</td>
+								<td style="text-align: center;">{incomplete_games.USER_PREDICTION}</td>
+							</tr>
+							<!-- BEGINELSE -->
+								<tr class="bg3">
+									<td colspan="6" align="center">{L_NO_INCOMPLETE GAMES}</td>
+								</tr>
+							<!-- END incomplete_games -->
+						</tbody>
+					</table>
+				<span class="corners-bottom"><span></span></span></div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="sportspredictions_fullcol">
+			<h3 class="sportspredictions_title">{L_PREDICTED_GAMES_COMPLETE}</h3>
+			<div class="forabg"> 
+				<div class="inner"><span class="corners-top"><span></span></span>
+					<table class="table1" cellspacing="1">
+						<thead>
+							<tr>
+								<th>{L_GAME_TIME}</th>
+								<th style="text-align: center;">{L_HOME}</th>
+								<th>&nbsp;</th>
+								<th style="text-align: center;">{L_AWAY}</th>
+								<th style="text-align: center;">{L_USERS_PREDICTION}</th>
+								<th style="text-align: center;">{L_RESULT}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- BEGIN complete_games --> 
+							<tr class="<!-- IF complete_games.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+								<td>{complete_games.GAME_TIME}</td>
+								<td style="text-align: center;">{complete_games.HOME_TEAM}</td>
+								<td style="text-align: center;">{L_SP_VS}</td>
+								<td style="text-align: center;">{complete_games.AWAY_TEAM}</td>
+								<td style="text-align: center;">{complete_games.USER_PREDICTION}</td>
+								<td style="text-align: center;">{complete_games.RESULT}</td>
+							</tr>
+							<!-- BEGINELSE -->
+								<tr class="bg3">
+									<td colspan="6" align="center">{L_NO_COMPLETE_GAMES}</td>
+								</tr>
+							<!-- END complete_games --> 
+						</tbody>
+					</table>
+				<span class="corners-bottom"><span></span></span></div>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<!-- INCLUDE overall_footer.html -->

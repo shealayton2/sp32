@@ -1,0 +1,67 @@
+<!-- INCLUDE overall_header.html -->
+
+<h2>{PAGE_TITLE}</h2>
+
+<!-- INCLUDE sportspredictions/nav.html -->
+
+<table id="sportspredictions_container">
+	<tr>
+		<td class="sportspredictions_fullcol">
+			<form id="predict" method="post" action="{U_ACTION}">
+			<div class="forabg"> 
+				<div class="inner"><span class="corners-top"><span></span></span>
+					<table class="table1" cellspacing="1">
+						<thead>
+							<tr>
+								<th>{L_GAME_TIME}</th>
+								<th style="text-align: center;">{L_HOME_TEAM}</th>
+								<th style="text-align: center;width: 70px;"><!-- IF SCORING_STYLE == 'score' -->{L_HOME_SCORE}<!-- ELSE -->{L_HOME}<!-- ENDIF --></th>
+								<th style="width: 40px;">&nbsp;</th>
+								<th style="text-align: center;width: 70px;"><!-- IF SCORING_STYLE == 'score' -->{L_AWAY_SCORE}<!-- ELSE -->{L_AWAY}<!-- ENDIF --></th>
+								<th style="text-align: center;">{L_AWAY_TEAM}</th>
+								<!-- IF SCORING_STYLE == 'winner' -->
+									<th style="text-align: center;width: 70px;">{L_PREDICT_DRAW}</th>
+								<!-- ENDIF -->
+							</tr>
+						</thead>
+						<tbody>
+						<!-- BEGIN upcoming_games --> 
+							<tr class="<!-- IF upcoming_games.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->"> 
+								<td style="text-align: center;">{upcoming_games.GAME_TIME}</td>
+								<td style="text-align: center;"><!-- IF upcoming_games.BONUS == 1 --><strong><!-- ENDIF -->{upcoming_games.HOME_TEAM}<!-- IF upcoming_games.BONUS == 1 --></strong><!-- ENDIF --></td>
+								<!-- IF SCORING_STYLE == 'score' -->
+									<td style="text-align: center;"><input class="inputbox autowidth" id="home_prediction[{upcoming_games.GAME_ID}]" type="text" name="home_prediction[{upcoming_games.GAME_ID}]" value="{upcoming_games.HOME_PREDICTION}" size="6" /></td>
+								<!-- ELSEIF SCORING_STYLE == 'winner' -->
+									<td style="text-align: center;"><input type="radio" id="home_prediction_{upcoming_games.GAME_ID}" name="game_prediction[{upcoming_games.GAME_ID}]" value="home"  <!-- IF upcoming_games.DEFAULT_PREDICTION == 'home' -->checked="checked"<!-- ENDIF --> /></td>
+								<!-- ENDIF -->
+								<td style="text-align: center;">{L_SP_VS}</td>
+								<!-- IF SCORING_STYLE == 'score' -->
+									<td style="text-align: center;"><input class="inputbox autowidth" id="away_prediction[{upcoming_games.GAME_ID}]" type="text" name="away_prediction[{upcoming_games.GAME_ID}]" value="{upcoming_games.AWAY_PREDICTION}" size="6" /></td>
+								<!-- ELSEIF SCORING_STYLE == 'winner' -->
+									<td style="text-align: center;"><input type="radio" id="away_prediction_{upcoming_games.GAME_ID}" name="game_prediction[{upcoming_games.GAME_ID}]" value="away" <!-- IF upcoming_games.DEFAULT_PREDICTION == 'away' -->checked="checked"<!-- ENDIF --> /></td>
+								<!-- ENDIF -->
+								<td style="text-align: center;"><!-- IF upcoming_games.BONUS == 1 --><strong><!-- ENDIF -->{upcoming_games.AWAY_TEAM}<!-- IF upcoming_games.BONUS == 1 --></strong><!-- ENDIF --></td>
+								<!-- IF SCORING_STYLE == 'winner' -->
+									<td style="text-align: center;"><input type="radio" id="draw_prediction_{upcoming_games.GAME_ID}" name="game_prediction[{upcoming_games.GAME_ID}]" value="draw" <!-- IF upcoming_games.DEFAULT_PREDICTION == 'draw' -->checked="checked"<!-- ENDIF --> /></td>
+								<!-- ENDIF -->
+							</tr>
+						<!-- END upcoming_games -->
+						</tbody>
+					</table>
+				<span class="corners-bottom"><span></span></span></div>
+			</div>
+			<div class="panel bg2">
+				<div class="inner"><span class="corners-top"><span></span></span>
+					<fieldset class="submit-buttons">
+						{S_FORM_TOKEN}
+						{S_HIDDEN_FIELDS}
+						<input type="submit" name="save" value="{L_SUBMIT}" class="button1 default-submit-action" />&nbsp;
+					</fieldset>
+				<span class="corners-bottom"><span></span></span></div>
+			</div>
+			</form>
+		</td>
+	</tr>
+</table>
+
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,67 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_SPORTS_PREDICTIONS} : {L_ACP_SP_CONFIGURATION}</h1>
+	
+<form id="acp_sp_config" method="post" action="{U_ACTION}">
+<fieldset>
+	<legend>{L_ACP_SP_GENERAL_CONFIG}</legend>
+	<dl>
+		<dt><label for="default_league">{L_DEFAULT_LEAGUE}</label></dt>
+		<dd><select id="default_league" name="default_league">{S_LEAGUE_OPTIONS}</select></dd>
+	</dl>
+	<dl>
+		<dt><label for="leaderboard_limit">{L_ACP_LEADERBOARD_LIMIT}</label><br /><span>{L_ACP_LEADERBOARD_LIMIT_EXPLAIN}</span></dt>
+		<dd><input id="leaderboard_limit" type="text" name="leaderboard_limit" value="{LEADERBOARD_LIMIT}" maxlength="255" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="upcoming_games_limit">{L_ACP_UPCOMING_GAMES_LIMIT}</label><br /><span>{L_ACP_UPCOMING_GAMES_LIMIT_EXPLAIN}</span></dt>
+		<dd><input id="upcoming_games_limit" type="text" name="upcoming_games_limit" value="{UPCOMING_GAMES_LIMIT}" maxlength="255" /></dd>
+	</dl>
+</fieldset>
+<fieldset>
+	<legend>{L_ACP_SP_SCORING_CONFIG}</legend>
+	<dl>
+		<dt><label for="exact_prediction_points">{L_ACP_EXACT_PREDICTION_POINTS}</label><br /><span>{L_ACP_EXACT_PREDICTION_POINTS_EXPLAIN}</span></dt>
+		<dd><input id="exact_prediction_points" type="text" name="exact_prediction_points" value="{EXACT_PREDICTION_POINTS}" maxlength="255" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="correct_prediction_points">{L_ACP_CORRECT_PREDICTION_POINTS}</label><br /><span>{L_ACP_CORRECT_PREDICTION_POINTS_EXPLAIN}</span></dt>
+		<dd><input id="correct_prediction_points" type="text" name="correct_prediction_points" value="{CORRECT_PREDICTION_POINTS}" maxlength="255" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="incorrect_prediction_points">{L_ACP_INCORRECT_PREDICTION_POINTS}</label><br /><span>{L_ACP_INCORRECT_PREDICTION_POINTS_EXPLAIN}</span></dt>
+		<dd><input id="incorrect_prediction_points" type="text" name="incorrect_prediction_points" value="{INCORRECT_PREDICTION_POINTS}" maxlength="255" /></dd>
+	</dl>
+</fieldset>
+<fieldset>
+	<legend>{L_ACP_LOGO_CONFIGURATION}</legend>
+	<dl>
+		<dt><label for="logo_path">{L_LOGO_PATH}</label></dt>
+		<dd><input id="logo_path" type="text" name="logo_path" value="{LOGO_PATH}" maxlength="255" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="logo_max_thumbnail_width">{L_LOGO_MAX_THUMBNAIL_WIDTH}</label></dt>
+		<dd><input id="logo_max_thumbnail_width" type="text" name="logo_max_thumbnail_width" value="{LOGO_MAX_THUMBNAIL_WIDTH}" maxlength="255" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="logo_max_thumbnail_height">{L_LOGO_MAX_THUMBNAIL_HEIGHT}</label></dt>
+		<dd><input id="logo_max_thumbnail_height" type="text" name="logo_max_thumbnail_height" value="{LOGO_MAX_THUMBNAIL_HEIGHT}" maxlength="255" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="rebuild_thumbnails">{L_REBUILD_THUMBNAILS}</label></dt>
+		<dd><a href="{U_REBUILD_THUMBNAILS}" id="rebuild_thumbnails" name="rebuild_thumbnails" />{L_REBUILD_THUMBNAILS_LINK}</dd>
+	</dl>
+</fieldset>
+<fieldset>
+	<legend>{L_SUBMIT}</legend>
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="save" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+	</p>
+	{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

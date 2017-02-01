@@ -1,0 +1,101 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_SPORTS_PREDICTIONS} : {L_ACP_SP_LEAGUES}</h1>
+
+<!-- IF S_EDIT_LEAGUE -->
+
+	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
+
+	<form id="acp_sp_leagues" method="post" action="{U_ACTION}" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{L_ACP_ADD_NEW_LEAGUE}</legend>
+		<p>{L_ACP_SP_ADD_LEAGUE_EXPLAIN}</p>
+		<dl>
+			<dt><label for="league_name">{L_LEAGUE_NAME}</label></dt>
+			<dd><input id="league_name" type="text" name="league_name" value="{LEAGUE_NAME}" maxlength="255" /></dd>
+		</dl>
+		<!-- IF LEAGUE_LOGO != '' -->
+			<dl>
+				<dt><label>{L_SP_CURRENT_LOGO}</label><br /><span>{L_LEAGUE_LOGO_EXPLAIN}</span></dt>
+				<dd><img src="{LEAGUE_LOGO}" alt="{LEAGUE_NAME}" /></dd>
+				<dd><input id="remove_logo" type="checkbox" name="remove_logo" />&nbsp;{L_REMOVE_LOGO}</dd>
+			</dl>
+		<!-- ENDIF -->
+		<dl>
+			<dt><label for="league_logo">{L_SP_NEW_LOGO}</label></dt>
+			<dd><input id="league_logo" type="file" name="league_logo" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="scoring_style">{L_SCORING_STYLE}</label><br /><span>{L_SCORING_STYLE_EXPLAIN}</span></dt>
+			<dd>
+				<input id="scoring_style_score" type="radio" name="scoring_style" value="score" <!-- IF SCORING_STYLE === 'score' -->checked="checked"<!-- ENDIF --> />&nbsp;{L_PICK_SCORE}
+				&nbsp;
+				<input id="scoring_style_winner" type="radio" name="scoring_style" value="winner" <!-- IF SCORING_STYLE === 'winner' -->checked="checked"<!-- ENDIF --> />&nbsp;{L_PICK_WINNER}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="pointdiff_average">{L_POINTDIFF_AVERAGE}</label><br /><span>{L_POINTDIFF_AVERAGE_EXPLAIN}</span></dt>
+			<dd>
+				<input id="pointdiff_average_yes" type="radio" name="pointdiff_average" value="1" <!-- IF POINTDIFF_AVERAGE === '1' -->checked="checked"<!-- ENDIF --> />&nbsp;{L_YES}
+				&nbsp;
+				<input id="pointdiff_average_no" type="radio" name="pointdiff_average" value="0" <!-- IF POINTDIFF_AVERAGE === '0' -->checked="checked"<!-- ENDIF --> />&nbsp;{L_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="active">{L_ACTIVE_LEAGUE}</label></dt>
+			<dd>
+				<input id="active_yes" type="radio" name="active" value="1" <!-- IF ACTIVE === '1' -->checked="checked"<!-- ENDIF --> />&nbsp;{L_YES}
+				&nbsp;
+				<input id="active_no" type="radio" name="active" value="0" <!-- IF ACTIVE === '0' -->checked="checked"<!-- ENDIF --> />&nbsp;{L_NO}
+			</dd>
+		</dl>
+	</fieldset>
+	{S_HIDDEN_FIELDS}
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="save" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		{S_FORM_TOKEN}
+	</p>
+	</form>
+
+<!-- ELSE -->
+
+	<p>{L_ACP_SP_LEAGUES_EXPLAIN}</p>
+
+	<form id="acp_sp_leagues" method="post" action="{U_ACTION}">
+	<fieldset class="tabulated">
+	<legend>{L_ACP_LEAGUES}</legend>
+	<table cellspacing="1" id="down">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>{L_LEAGUE_NAME}</th>
+				<th>{L_ACTION}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN leagues -->
+			<!-- IF leagues.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+				<td style="text-align: center; width: 30px;"><!-- IF leagues.LEAGUE_LOGO_THUMBNAIL != '' --><img src="{leagues.LEAGUE_LOGO_THUMBNAIL}" alt="{leagues.LEAGUE_NAME}" /><!-- ELSE -->&nbsp;<!-- ENDIF --></td>
+				<td style="text-align: left;">{leagues.LEAGUE_NAME}</td>
+				<td style="text-align: right; width: 40px;"><a href="{leagues.U_EDIT}">{ICON_EDIT}</a> <a href="{leagues.U_DELETE}">{ICON_DELETE}</a></td>
+			</tr>
+		<!-- BEGINELSE -->
+			<tr class="row3">
+				<td colspan="3">{L_ACP_NO_ITEMS}</td>
+			</tr>
+		<!-- END leagues -->
+		</tbody>
+	</table>
+	<p class="quick">
+		<input class="button2" name="add" type="submit" value="{L_ACP_ADD_NEW_LEAGUE}" />
+	</p>
+	{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

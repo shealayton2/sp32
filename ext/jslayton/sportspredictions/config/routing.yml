@@ -1,0 +1,42 @@
+#ext/jslayton/sportspredictions/config/routing.yml
+sportspredictions_base_controller:
+    path: /sportspredictions
+    defaults: { _controller: jslayton.sportspredictions.controller:index, sort: '', start: 0 }
+
+sportspredictions_index_page_controller:
+    path: /sportspredictions/start/{start}
+    defaults: { _controller: jslayton.sportspredictions.controller:index, sort: '' }
+    requirements:
+        start: \d+
+
+sportspredictions_index_sort_controller:
+    path: /sportspredictions/sort/{sort}
+    defaults: { _controller: jslayton.sportspredictions.controller:index, start: 1 }
+
+sportspredictions_index_sort_page_controller:
+    path: /sportspredictions/sort/{sort}/start/{start}
+    defaults: { _controller: jslayton.sportspredictions.controller:index, }
+    requirements:
+        start: \d+
+
+sportspredictions_predict:
+    path: /sportspredictions/predict
+    defaults: { _controller: jslayton.sportspredictions.controller:predict, mode: "predict" }
+
+sportspredictions_edit_predictions:
+    path: /sportspredictions/predict/edit
+    defaults: { _controller: jslayton.sportspredictions.controller:predict, mode: "edit_predictions" }
+
+sportspredictions_full_leaderboard:
+    path: /sportspredictions/full_leaderboard
+    defaults: { _controller: jslayton.sportspredictions.controller:full_leaderboard }
+
+sportspredictions_user_stats:
+    path: /sportspredictions/user_stats/{user_id}
+    defaults: { _controller: jslayton.sportspredictions.controller:user_stats }
+    requirements:
+        user_id: \d+
+
+sportspredictions_reminder:
+    path: /sportspredictions/reminder/{req}
+    defaults: { _controller: jslayton.sportspredictions.controller:reminder }

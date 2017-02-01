@@ -1,0 +1,34 @@
+services:
+    jslayton.sportspredictions.controller:
+        class: jslayton\sportspredictions\controller\main
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@template'
+            - '@user'
+            - '@controller.helper'
+            - '@request'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+
+    jslayton.sportspredictions:
+        class: jslayton\sportspredictions\sportspredictions
+        arguments:
+            - '@auth'
+            - '@cache'
+            - '@config'
+            - '@dbal.conn'
+            - '@template'
+            - '@user'
+            - '@controller.helper'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+
+    jslayton.sportspredictions.listener:
+        class: jslayton\sportspredictions\event\main_listener
+        arguments:
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+        tags:
+            - { name: event.listener }

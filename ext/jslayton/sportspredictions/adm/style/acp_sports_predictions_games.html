@@ -1,0 +1,135 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_SPORTS_PREDICTIONS} : {L_ACP_SP_GAMES}</h1>
+
+<!-- IF S_EDIT_GAME -->
+
+	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
+
+	<form id="acp_sp_games" method="post" action="{U_ACTION}">
+	<fieldset>
+		<legend>{L_ACP_SP_ADD_GAMES}</legend>
+		<p>{DISPLAY_TIME}</p>
+		<p>{L_ACP_SP_ADD_GAMES_EXPLAIN}</p>
+		<table cellspacing="1" id="down">
+			<thead>
+				<tr>
+					<th style="width: 175px;">{L_GAME_DATE}</th>
+					<th style="width: 160px;">{L_GAME_TIME}</th>
+					<th style="text-align: center;">{L_AWAY_TEAM}</th>
+					<th style="width: 30px;">&nbsp;</th>
+					<th style="text-align: center;">{L_HOME_TEAM}</th>
+					<th style="text-align: center;">{L_BONUS}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- IF S_MULTIADD -->
+					<!-- BEGIN multiadd -->
+						<!-- IF multiadd.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+							<td style="text-align: center;">
+								<select id="gametime_month_{multiadd.S_ROW_COUNT}" name="gametime_month[{multiadd.S_ROW_COUNT}]">{S_GAMETIME_MONTH_OPTIONS}</select>&nbsp;
+								<select id="gametime_day_{multiadd.S_ROW_COUNT}" name="gametime_day[{multiadd.S_ROW_COUNT}]">{S_GAMETIME_DAY_OPTIONS}</select>&nbsp;
+								<select id="gametime_year_{multiadd.S_ROW_COUNT}" name="gametime_year[{multiadd.S_ROW_COUNT}]">{S_GAMETIME_YEAR_OPTIONS}</select>
+							</td>
+							<td style="text-align: center;">
+								<select id="gametime_hour_{multiadd.S_ROW_COUNT}" name="gametime_hour[{multiadd.S_ROW_COUNT}]">{S_GAMETIME_HOUR_OPTIONS}</select>&nbsp;
+								<select id="gametime_minute_{multiadd.S_ROW_COUNT}" name="gametime_minute[{multiadd.S_ROW_COUNT}]">{S_GAMETIME_MINUTE_OPTIONS}</select>&nbsp;
+								<select id="gametime_ampm_{multiadd.S_ROW_COUNT}" name="gametime_ampm[{multiadd.S_ROW_COUNT}]">{S_GAMETIME_AMPM_OPTIONS}</select>
+							</td>
+							<td style="text-align: center;"><select id="away_id_{multiadd.S_ROW_COUNT}" name="away_id[{multiadd.S_ROW_COUNT}]">{S_AWAY_TEAM_OPTIONS}</select></td>
+							<td style="text-align: center;">{L_SP_VS}</td>
+							<td style="text-align: center;"><select id="home_id_{multiadd.S_ROW_COUNT}" name="home_id[{multiadd.S_ROW_COUNT}]">{S_HOME_TEAM_OPTIONS}</select></td>
+							<td style="text-align: center;"><input id="bonus_{multiadd.S_ROW_COUNT}" class="radio" type="checkbox" name="bonus[{multiadd.S_ROW_COUNT}]" /></td>
+						</tr>
+					<!-- END multiadd -->
+				<!-- ELSE -->
+					<tr class="row1">
+						<td style="text-align: center;">
+							<select id="gametime_month" name="gametime_month">{S_GAMETIME_MONTH_OPTIONS}</select>&nbsp;
+							<select id="gametime_day" name="gametime_day">{S_GAMETIME_DAY_OPTIONS}</select>&nbsp;
+							<select id="gametime_year" name="gametime_year">{S_GAMETIME_YEAR_OPTIONS}</select>
+						</td>
+						<td style="text-align: center;">
+							<select id="gametime_hour" name="gametime_hour">{S_GAMETIME_HOUR_OPTIONS}</select>&nbsp;
+							<select id="gametime_minute" name="gametime_minute">{S_GAMETIME_MINUTE_OPTIONS}</select>&nbsp;
+							<select id="gametime_ampm" name="gametime_ampm">{S_GAMETIME_AMPM_OPTIONS}</select>
+						</td>
+						<td style="text-align: center;"><select id="away_id" name="away_id">{S_AWAY_TEAM_OPTIONS}</select></td>
+						<td style="text-align: center;">{L_SP_VS}</td>
+						<td style="text-align: center;"><select id="home_id" name="home_id">{S_HOME_TEAM_OPTIONS}</select></td>
+						<td style="text-align: center;"><input id="bonus" class="radio" type="checkbox" name="bonus" <!-- IF BONUS == '1' -->checked="checked"<!-- ENDIF --> /></td>
+					</tr>
+				<!-- ENDIF -->
+			</tbody>
+		</table>
+	</fieldset>
+	{S_HIDDEN_FIELDS}
+	{S_FORM_TOKEN}
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="<!-- IF S_MULTIADD -->multisave<!-- ELSE -->save<!-- ENDIF -->" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		{S_FORM_TOKEN}
+	</p>
+	</form>
+
+<!-- ELSE -->
+
+	<p>{L_ACP_SP_GAMES_EXPLAIN}</p>
+	<p>{L_ACP_SP_GAMES_TZ_EXPLAIN} {USER_TIMEZONE}</p>
+
+	<!-- IF S_SHOW_LEAGUE_BOX -->
+		<form id="league_select" method="post" action="{U_ACTION}">
+		<fieldset class="quick">
+			{L_CURRENT_LEAGUE}:&nbsp;<select id="league_id" name="league_id" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">{S_LEAGUE_OPTIONS}</select>&nbsp;<input class="button2" name="change_league" type="submit" value="{L_CHANGE_LEAGUE}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+		</form>
+	<!-- ENDIF -->
+	<form id="acp_sp_games" method="post" action="{U_ACTION}">
+	<fieldset class="tabulated">
+	<legend>{L_ACP_SP_GAMES}</legend>
+	<table cellspacing="1" id="down">
+		<thead>
+			<tr>
+				<th>{L_GAME_TIME}</th>
+				<th style="text-align: center;">{L_AWAY_TEAM}</th>
+				<th style="width: 30px;">&nbsp;</th>
+				<th style="text-align: center;">{L_HOME_TEAM}</th>
+				<th style="text-align: center;">{L_BONUS}</th>
+				<th>{L_ACTION}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN games -->
+			<!-- IF games.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+				<td style="text-align: left;">{games.GAMETIME}</td>
+				<td style="text-align: center;">{games.AWAY_TEAM}</td>
+				<td style="text-align: center;">{L_SP_VS}</td>
+				<td style="text-align: center;">{games.HOME_TEAM}</td>
+				<td style="text-align: center;">{games.BONUS}</td>
+				<td style="text-align: right; width: 40px;"><a href="{games.U_EDIT}">{ICON_EDIT}</a> <a href="{games.U_DELETE}">{ICON_DELETE}</a></td>
+			</tr>
+		<!-- BEGINELSE -->
+			<tr class="row3">
+				<td colspan="5">{L_ACP_NO_ITEMS}</td>
+			</tr>
+		<!-- END games -->
+		</tbody>
+	</table>
+	<!-- IF TEAM_COUNT >= 2 -->
+		<p class="quick">
+			<input class="button2" name="multiadd" type="submit" value="{L_ACP_ADD_MULTIPLE_GAMES}" />
+			&nbsp;
+			<input class="button2" name="add" type="submit" value="{L_ACP_ADD_NEW_GAME}" />
+		</p>
+	<!-- ENDIF -->
+	{S_HIDDEN_FIELDS}
+	{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->
