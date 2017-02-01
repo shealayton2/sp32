@@ -1,6 +1,6 @@
 <?php
 
-namespace jslayton\sportspredictions\migrations;
+namespace jslayton\sportspredictions\migrations\v10x;
 
 class add_module extends \phpbb\db\migration\migration
 {
@@ -41,7 +41,7 @@ class add_module extends \phpbb\db\migration\migration
                 'acp',
                 'ACP_SPORTS_PREDICTIONS',
                 array(
-                    'module_basename'       => '\acme\demo\acp\main_module',
+                    'module_basename'       => '\jslayton\sportspredictions\acp\main_module',
                     'modes'                 => array('overview', 'configuration', 'leagues', 'teams', 'games', 'scores', 'predictions'),
                 ),
             )),
