@@ -13,11 +13,6 @@
  * @ignore
  */
 
-if (!defined('IN_PHPBB'))
-{
-   exit;
-}
-
 namespace jslayton\sportspredictions\event;
 
 /**
