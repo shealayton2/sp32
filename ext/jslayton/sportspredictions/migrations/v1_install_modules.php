@@ -1,6 +1,6 @@
 <?php
 
-namespace jslayton\sportspredictions\migrations\v10x;
+namespace jslayton\sportspredictions\migrations;
 
 class add_module extends \phpbb\db\migration\migration
 {
