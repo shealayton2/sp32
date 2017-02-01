@@ -17,4 +17,10 @@
     "require": {
         "php": ">=5.3.3"
     },
+    "extra": {
+		"display-name": "Sports Predictions",
+		"soft-require": {
+			"phpbb/phpbb": "~3.2"
+		}
+    }
  }
