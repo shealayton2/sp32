@@ -138,12 +138,14 @@ class main_module
 			));
 		}
 		
+		/*
 		if (sizeof($this->sportspredictions->stats_array[$league_id]) > $this->sportspredictions->config['leaderboard_limit']) {
 			$template->assign_vars(array(
 				'PAGINATION'	=> generate_pagination($this->u_action . "&amp;sort=$sort", sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start),
 				'S_ON_PAGE'		=> on_page(sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start)
 			));
 		}
+		*/
 		
 		$pagination = $phpbb_container->get('pagination');
 		$pagination->generate_template_pagination($this->u_action . "&amp;sort=$sort", 'paginated', 'page', sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start);
