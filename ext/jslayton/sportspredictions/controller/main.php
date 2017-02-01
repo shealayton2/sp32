@@ -102,9 +102,9 @@ class main
 		//$pagination_url = (sizeof($params) > 0) ? append_sid("{$phpbb_root_path}sportspredictions.$phpEx", implode('&amp;', $params)) : append_sid("{$phpbb_root_path}sportspredictions.$phpEx");
 		
 		if ($this->user->data['user_sp_reminder'] == 1) {
-			$u_reminder_subscribe = $this->helper->route('sportspredictions_reminder', array('req' => 'unsubscribe'));
+			$u_reminder_subscribe = $this->helper->route('jslayton_sportspredictions_reminder', array('req' => 'unsubscribe'));
 		} else {
-			$u_reminder_subscribe = $this->helper->route('sportspredictions_reminder', array('req' => 'subscribe'));
+			$u_reminder_subscribe = $this->helper->route('jslayton_sportspredictions_reminder', array('req' => 'subscribe'));
 		}
 		
 		$this->template->assign_vars(array(
@@ -138,7 +138,7 @@ class main
 				'POSITION'		=> $lb_data['rank'],
 				'USER_ID'		=> $lb_data['user_id'],
 				'USERNAME'		=> $lb_data['username'],
-				'STATS_LINK'	=> $this->helper->route('sportspredictions_user_stats', array('user_id' => $lb_data['user_id'])),
+				'STATS_LINK'	=> $this->helper->route('jslayton_sportspredictions_user_stats', array('user_id' => $lb_data['user_id'])),
 				'HIGHLIGHT'		=> (($lb_data['user_id'] == $this->user->data['user_id']) ? true : false),
 				'WINS'			=> $lb_data['wins'],
 				'LOSSES'		=> $lb_data['losses'],
