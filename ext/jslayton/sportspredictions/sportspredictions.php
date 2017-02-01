@@ -1499,7 +1499,7 @@ class sportspredictions
 			}
 		}
 		
-		set_config('sportspredictions_last_gc', time(), true);
+		$config->set('sportspredictions_last_gc', time(), true);
 	}
 	
 	function get_incomplete_rounds($league_id)
