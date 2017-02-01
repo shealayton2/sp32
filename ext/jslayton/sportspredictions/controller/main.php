@@ -61,10 +61,10 @@ class main
 		$template->assign_vars(array(
 			'S_LEAGUE_OPTIONS'			=> $this->sportspredictions->build_league_options(),
 			
-			'U_SP_NAV_HOME'				=> $this->helper->route('sportspredictions_base_controller'),
-			'U_SP_NAV_FULL_LEADERBOARD'	=> $this->helper->route('sportspredictions_full_leaderboard'),
-			'U_SP_NAV_PREDICT'			=> $this->helper->route('sportspredictions_predict'),
-			'U_SP_NAV_EDIT_PREDICTIONS'	=> $this->helper->route('sportspredictions_edit_predictions'))
+			'U_SP_NAV_HOME'				=> $this->helper->route('jslayton_sportspredictions_base_controller'),
+			'U_SP_NAV_FULL_LEADERBOARD'	=> $this->helper->route('jslayton_sportspredictions_full_leaderboard'),
+			'U_SP_NAV_PREDICT'			=> $this->helper->route('jslayton_sportspredictions_predict'),
+			'U_SP_NAV_EDIT_PREDICTIONS'	=> $this->helper->route('jslayton_sportspredictions_edit_predictions'))
 		);
 	}
 
@@ -119,14 +119,14 @@ class main
 			
 			'S_REMINDER_STATUS'		=> $this->user->data['user_sp_reminder'],
 
-			'U_FULL_LEADERBOARD'	=> $this->helper->route('sportspredictions_full_leaderboard'),
-			'U_SORT_USERNAME'		=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'username')),
-			'U_SORT_WINS'			=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'wins')),
-			'U_SORT_LOSSES'			=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'losses')),
-			'U_SORT_POINTDIFF'		=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'pointdiff')),
-			'U_SORT_WINPERC'		=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'winperc')),
-			'U_SORT_POINTS'			=> $this->helper->route('sportspredictions_base_controller'),
-			'U_PREDICT' 			=> $this->helper->route('sportspredictions_predict'),
+			'U_FULL_LEADERBOARD'	=> $this->helper->route('jslayton_sportspredictions_full_leaderboard'),
+			'U_SORT_USERNAME'		=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'username')),
+			'U_SORT_WINS'			=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'wins')),
+			'U_SORT_LOSSES'			=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'losses')),
+			'U_SORT_POINTDIFF'		=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'pointdiff')),
+			'U_SORT_WINPERC'		=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'winperc')),
+			'U_SORT_POINTS'			=> $this->helper->route('jslayton_sportspredictions_base_controller'),
+			'U_PREDICT' 			=> $this->helper->route('jslayton_sportspredictions_predict'),
 			'U_REMINDER_SUBSCRIBE'	=> $u_reminder_subscribe)
 		);
 
@@ -161,8 +161,8 @@ class main
 				$pagination->generate_template_pagination(
 					array(
 						'routes' => array(
-							'sportspredictions_base_controller',
-							'sportspredictions_index_page_controller',
+							'jslayton_sportspredictions_base_controller',
+							'jslayton_sportspredictions_index_page_controller',
 						),
 						'params' => array(),
 					), 'pagination', 'page', sizeof($this->sportspredictions->stats_array), $this->sportspredictions->config['leaderboard_limit'], $start);
@@ -280,7 +280,7 @@ class main
 			}
 
 			meta_refresh(3, $u_action);
-			$message = $this->user->lang['PREDICTION_UPDATE_SUCCESS'] . '<br /><br />' . sprintf($this->user->lang['RETURN_SP_INDEX'], '<a href="' . $this->helper->route('sportspredictions_base_controller') . '">', '</a>');
+			$message = $this->user->lang['PREDICTION_UPDATE_SUCCESS'] . '<br /><br />' . sprintf($this->user->lang['RETURN_SP_INDEX'], '<a href="' . $this->helper->route('jslayton_sportspredictions_base_controller') . '">', '</a>');
 			trigger_error($message);
 		}
 		
@@ -304,7 +304,7 @@ class main
 		if (sizeof($upcoming_games) == 0)
 		{
 			meta_refresh(3, $u_action);
-			$message = $this->user->lang['NO_GAMES_TO_PREDICT'] . '<br /><br />' . sprintf($this->user->lang['RETURN_SP_INDEX'], '<a href="' . $this->helper->route('sportspredictions_base_controller') . '">', '</a>');
+			$message = $this->user->lang['NO_GAMES_TO_PREDICT'] . '<br /><br />' . sprintf($this->user->lang['RETURN_SP_INDEX'], '<a href="' . $this->helper->route('jslayton_sportspredictions_base_controller') . '">', '</a>');
 			trigger_error($message);
 		}
 		foreach ($upcoming_games AS $game_id => $game_data)
@@ -381,14 +381,14 @@ class main
 			'INCORRECT_PREDICTION_EXPLAIN'	=> sprintf($this->user->lang('INCORRECT_PREDICTION_EXPLAIN'), $this->sportspredictions->config['incorrect_prediction_points']),
 			'LEAGUE_NAME'					=> $this->sportspredictions->leagues_array[$this->sportspredictions->get_league_id()]['league_name'],
 
-			'U_FULL_LEADERBOARD'	=> $this->helper->route('sportspredictions_full_leaderboard'),
-			'U_SORT_USERNAME'		=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'username')),
-			'U_SORT_WINS'			=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'wins')),
-			'U_SORT_LOSSES'			=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'losses')),
-			'U_SORT_POINTDIFF'		=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'pointdiff')),
-			'U_SORT_WINPERC'		=> $this->helper->route('sportspredictions_index_sort_controller', array('sort' => 'winperc')),
-			'U_SORT_POINTS'			=> $this->helper->route('sportspredictions_base_controller'),
-			'U_PREDICT' 			=> $this->helper->route('sportspredictions_predict'))
+			'U_FULL_LEADERBOARD'	=> $this->helper->route('jslayton_sportspredictions_full_leaderboard'),
+			'U_SORT_USERNAME'		=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'username')),
+			'U_SORT_WINS'			=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'wins')),
+			'U_SORT_LOSSES'			=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'losses')),
+			'U_SORT_POINTDIFF'		=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'pointdiff')),
+			'U_SORT_WINPERC'		=> $this->helper->route('jslayton_sportspredictions_index_sort_controller', array('sort' => 'winperc')),
+			'U_SORT_POINTS'			=> $this->helper->route('jslayton_sportspredictions_base_controller'),
+			'U_PREDICT' 			=> $this->helper->route('jslayton_sportspredictions_predict'))
 		);
 		
 		$stats_array = $this->sportspredictions->build_leaderboard($sort);
@@ -399,7 +399,7 @@ class main
 				'POSITION'		=> $lb_data['rank'],
 				'USER_ID'		=> $lb_data['user_id'],
 				'USERNAME'		=> $lb_data['username'],
-				'STATS_LINK'	=> $this->helper->route('sportspredictions_user_stats', array('user_id' => $lb_data['user_id'])),
+				'STATS_LINK'	=> $this->helper->route('jslayton_sportspredictions_user_stats', array('user_id' => $lb_data['user_id'])),
 				'HIGHLIGHT'		=> (($lb_data['user_id'] == $this->user->data['user_id']) ? true : false),
 				'WINS'			=> $lb_data['wins'],
 				'LOSSES'		=> $lb_data['losses'],
@@ -572,7 +572,7 @@ class main
 		}
 		
 		meta_refresh(3, $u_action);
-		$message = $return_msg . '<br /><br />' . sprintf($this->user->lang['RETURN_SP_INDEX'], '<a href="' . $this->helper->route('sportspredictions_base_controller') . '">', '</a>');
+		$message = $return_msg . '<br /><br />' . sprintf($this->user->lang['RETURN_SP_INDEX'], '<a href="' . $this->helper->route('jslayton_sportspredictions_base_controller') . '">', '</a>');
 		trigger_error($message);
 		
 		/*
