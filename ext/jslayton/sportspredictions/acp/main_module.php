@@ -148,7 +148,7 @@ class main_module
 		$pagination = $phpbb_container->get('pagination');
 		$pagination->generate_template_pagination($this->u_action . "&amp;sort=$sort", 'paginated', 'page', sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start);
 		$template->assign_vars(array(
-			'S_ON_PAGE' => $pagination->on_page(sizeof($this->sportspredictions->stats_array[$league_id])$this->sportspredictions->config['leaderboard_limit'], $start),
+			'S_ON_PAGE' => $pagination->on_page(sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start),
 		));
 		
 		$s_league_options = $this->sportspredictions->build_league_options($league_id);

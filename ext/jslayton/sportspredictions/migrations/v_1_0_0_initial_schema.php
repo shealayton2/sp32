@@ -40,6 +40,7 @@ class v_1_0_0_initial_schema extends migration
 			'add_columns' => array(
 				$this->table_prefix . 'users' => array(
 					'user_sp_default_league' => array('UINT', 0),
+				),
 			),
 			
 			'add_tables' => array(
