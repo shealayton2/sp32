@@ -184,7 +184,7 @@ class main_module
 		global $phpbb_root_path, $phpEx;
 		
 		// Set some vars
-		$action	= request_var('action', '');
+		$action	= $request->variable('action', '');
 		$action = (isset($_POST['add'])) ? 'add' : ((isset($_POST['save'])) ? 'save' : $action);
 		
 		$s_hidden_fields = '';
@@ -278,15 +278,15 @@ class main_module
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$config_ary['default_league']				= request_var('default_league', 0);
-				$config_ary['leaderboard_limit']			= request_var('leaderboard_limit', 0);
-				$config_ary['upcoming_games_limit']			= request_var('upcoming_games_limit', 0);
-				$config_ary['exact_prediction_points']		= request_var('exact_prediction_points', 0);
-				$config_ary['correct_prediction_points']	= request_var('correct_prediction_points', 0);
-				$config_ary['incorrect_prediction_points']	= request_var('incorrect_prediction_points', 0);
-				$config_ary['logo_path']					= request_var('logo_path', '', true);
-				$config_ary['logo_max_thumbnail_width']		= request_var('logo_max_thumbnail_width', 0);
-				$config_ary['logo_max_thumbnail_height']	= request_var('logo_max_thumbnail_height', 0);
+				$config_ary['default_league']				= $request->variable('default_league', 0);
+				$config_ary['leaderboard_limit']			= $request->variable('leaderboard_limit', 0);
+				$config_ary['upcoming_games_limit']			= $request->variable('upcoming_games_limit', 0);
+				$config_ary['exact_prediction_points']		= $request->variable('exact_prediction_points', 0);
+				$config_ary['correct_prediction_points']	= $request->variable('correct_prediction_points', 0);
+				$config_ary['incorrect_prediction_points']	= $request->variable('incorrect_prediction_points', 0);
+				$config_ary['logo_path']					= $request->variable('logo_path', '', true);
+				$config_ary['logo_max_thumbnail_width']		= $request->variable('logo_max_thumbnail_width', 0);
+				$config_ary['logo_max_thumbnail_height']	= $request->variable('logo_max_thumbnail_height', 0);
 				
 				if ($config_ary['default_league'] == 0)
 				{
@@ -353,7 +353,7 @@ class main_module
 		global $phpbb_root_path, $phpEx;
 		
 		// Set some vars
-		$action	= request_var('action', '');
+		$action	= $request->variable('action', '');
 		$action = (isset($_POST['add'])) ? 'add' : ((isset($_POST['save'])) ? 'save' : $action);
 		
 		$s_hidden_fields = '';
@@ -365,7 +365,7 @@ class main_module
 		{
 			case 'edit':
 			
-				$league_id = request_var('league_id', 0);
+				$league_id = $request->variable('league_id', 0);
 				
 				if (!$league_id)
 				{
@@ -401,12 +401,12 @@ class main_module
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$league_id			= request_var('league_id', 0);
-				$league_name		= utf8_normalize_nfc(request_var('league_name', '', true));
-				$remove_logo		= request_var('remove_logo', false);
-				$scoring_style		= request_var('scoring_style', 'score');
-				$pointdiff_average	= request_var('pointdiff_average', 1);
-				$active				= request_var('active', 1);
+				$league_id			= $request->variable('league_id', 0);
+				$league_name		= utf8_normalize_nfc($request->variable('league_name', '', true));
+				$remove_logo		= $request->variable('remove_logo', false);
+				$scoring_style		= $request->variable('scoring_style', 'score');
+				$pointdiff_average	= $request->variable('pointdiff_average', 1);
+				$active				= $request->variable('active', 1);
 				
 				if ($league_name === '')
 				{
@@ -505,7 +505,7 @@ class main_module
 			
 			case 'delete':
 			
-				$league_id = request_var('league_id', 0);
+				$league_id = $request->variable('league_id', 0);
 				
 				if (!$league_id)
 				{
@@ -562,7 +562,7 @@ class main_module
 		global $phpbb_root_path, $phpEx;
 		
 		// Set some vars
-		$action	= request_var('action', '');
+		$action	= $request->variable('action', '');
 		$action = (isset($_POST['add'])) ? 'add' : ((isset($_POST['multiadd'])) ? 'multiadd' : ((isset($_POST['save'])) ? 'save' : ((isset($_POST['multisave'])) ? 'multisave' : $action)));
 		
 		$s_hidden_fields = '';
@@ -574,7 +574,7 @@ class main_module
 		{
 			case 'edit':
 			
-				$team_id	= request_var('team_id', 0);
+				$team_id	= $request->variable('team_id', 0);
 
 				if (!$team_id)
 				{
@@ -585,7 +585,7 @@ class main_module
 				
 			case 'add':
 			
-				$league_id	= request_var('league_id', 0);
+				$league_id	= $request->variable('league_id', 0);
 				
 				if (!$league_id)
 				{
@@ -613,7 +613,7 @@ class main_module
 			
 			case 'multiadd':
 			
-				$league_id	= request_var('league_id', 0);
+				$league_id	= $request->variable('league_id', 0);
 				
 				if (!$league_id)
 				{
@@ -640,11 +640,11 @@ class main_module
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$league_id		= request_var('league_id', 0);
-				$team_id		= request_var('team_id', 0);
-				$team_name		= utf8_normalize_nfc(request_var('team_name', '', true));
-				$remove_logo 	= request_var('remove_logo', false);
-				$show_results	= request_var('show_results', 1);
+				$league_id		= $request->variable('league_id', 0);
+				$team_id		= $request->variable('team_id', 0);
+				$team_name		= utf8_normalize_nfc($request->variable('team_name', '', true));
+				$remove_logo 	= $request->variable('remove_logo', false);
+				$show_results	= $request->variable('show_results', 1);
 				
 				if (!$league_id)
 				{
@@ -738,8 +738,8 @@ class main_module
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$league_id	= request_var('league_id', 0);
-				$team_names	= request_var('team_names', '');
+				$league_id	= $request->variable('league_id', 0);
+				$team_names	= $request->variable('team_names', '');
 				
 				if (!$league_id)
 				{
@@ -773,8 +773,8 @@ class main_module
 			
 			case 'delete':
 			
-				$league_id	= request_var('league_id', 0);
-				$team_id	= request_var('team_id', 0);
+				$league_id	= $request->variable('league_id', 0);
+				$team_id	= $request->variable('team_id', 0);
 				
 				if (!$league_id)
 				{
@@ -853,7 +853,7 @@ class main_module
 			break;
 		}
 		
-		$league_id	= request_var('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
 		
 		$s_league_options = $this->sportspredictions->build_league_options($league_id);
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
@@ -891,7 +891,7 @@ class main_module
 		global $phpbb_root_path, $phpEx;
 		
 		// Set some vars
-		$action	= request_var('action', '');
+		$action	= $request->variable('action', '');
 		$action	= (isset($_POST['add'])) ? 'add' : ((isset($_POST['multiadd'])) ? 'multiadd' : ((isset($_POST['save'])) ? 'save' : ((isset($_POST['multisave'])) ? 'multisave' : ((isset($_POST['change_league']) ? 'change_league' : $action)))));
 		
 		$s_hidden_fields = '';
@@ -903,7 +903,7 @@ class main_module
 		{
 			case 'edit':
 			
-				$game_id = request_var('game_id', 0);
+				$game_id = $request->variable('game_id', 0);
 
 				if (!$game_id)
 				{
@@ -921,7 +921,7 @@ class main_module
 				
 			case 'add':
 
-				$league_id = request_var('league_id', 0);
+				$league_id = $request->variable('league_id', 0);
 
 				if (!$league_id)
 				{
@@ -976,7 +976,7 @@ class main_module
 			
 			case 'multiadd':
 			
-				$league_id	= request_var('league_id', 0);
+				$league_id	= $request->variable('league_id', 0);
 				
 				if (!$league_id)
 				{
@@ -1024,16 +1024,16 @@ class main_module
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$league_id			= request_var('league_id', 0);
-				$game_id			= request_var('game_id', 0);
-				$gametime_month		= request_var('gametime_month', 0);
-				$gametime_day		= request_var('gametime_day', 0);
-				$gametime_year		= request_var('gametime_year', 0);
-				$gametime_hour		= request_var('gametime_hour', 0);
-				$gametime_minute	= request_var('gametime_minute', 99);
-				$gametime_ampm		= request_var('gametime_ampm', '', true);
-				$away_id			= request_var('away_id', 0);
-				$home_id			= request_var('home_id', 0);
+				$league_id			= $request->variable('league_id', 0);
+				$game_id			= $request->variable('game_id', 0);
+				$gametime_month		= $request->variable('gametime_month', 0);
+				$gametime_day		= $request->variable('gametime_day', 0);
+				$gametime_year		= $request->variable('gametime_year', 0);
+				$gametime_hour		= $request->variable('gametime_hour', 0);
+				$gametime_minute	= $request->variable('gametime_minute', 99);
+				$gametime_ampm		= $request->variable('gametime_ampm', '', true);
+				$away_id			= $request->variable('away_id', 0);
+				$home_id			= $request->variable('home_id', 0);
 				$bonus				= (isset($_POST['bonus'])) ? 1 : 0;
 				
 				if (!$league_id)
@@ -1098,16 +1098,16 @@ class main_module
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$league_id			= request_var('league_id', 0);
-				$game_id			= request_var('game_id', array(0));
-				$gametime_month		= request_var('gametime_month', array(0));
-				$gametime_day		= request_var('gametime_day', array(0));
-				$gametime_year		= request_var('gametime_year', array(0));
-				$gametime_hour		= request_var('gametime_hour', array(0));
-				$gametime_minute	= request_var('gametime_minute', array(99));
-				$gametime_ampm		= request_var('gametime_ampm', array(''), true);
-				$away_id			= request_var('away_id', array(0));
-				$home_id			= request_var('home_id', array(0));
+				$league_id			= $request->variable('league_id', 0);
+				$game_id			= $request->variable('game_id', array(0));
+				$gametime_month		= $request->variable('gametime_month', array(0));
+				$gametime_day		= $request->variable('gametime_day', array(0));
+				$gametime_year		= $request->variable('gametime_year', array(0));
+				$gametime_hour		= $request->variable('gametime_hour', array(0));
+				$gametime_minute	= $request->variable('gametime_minute', array(99));
+				$gametime_ampm		= $request->variable('gametime_ampm', array(''), true);
+				$away_id			= $request->variable('away_id', array(0));
+				$home_id			= $request->variable('home_id', array(0));
 				
 				if (!$league_id)
 				{
@@ -1143,8 +1143,8 @@ class main_module
 			
 			case 'delete':
 			
-				$league_id	= request_var('league_id', 0);
-				$game_id	= request_var('game_id', 0);
+				$league_id	= $request->variable('league_id', 0);
+				$game_id	= $request->variable('game_id', 0);
 				
 				if (!$league_id)
 				{
@@ -1189,7 +1189,7 @@ class main_module
 			break;
 		}
 
-		$league_id	= request_var('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
 		
 		$s_league_options = $this->sportspredictions->build_league_options($league_id);
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
@@ -1230,7 +1230,7 @@ class main_module
 		global $phpbb_root_path, $phpEx;
 		
 		// Set some vars
-		$action	= request_var('action', '');
+		$action	= $request->variable('action', '');
 		$action = (isset($_POST['add'])) ? 'add' : ((isset($_POST['save'])) ? 'save' : $action);
 		
 		$s_hidden_fields = '';
@@ -1242,8 +1242,8 @@ class main_module
 		{
 			case 'edit':
 
-				$league_id	= request_var('league_id', 0);
-				$game_id	= request_var('game_id', 0);
+				$league_id	= $request->variable('league_id', 0);
+				$game_id	= $request->variable('game_id', 0);
 								
 				if (!$league_id)
 				{
@@ -1284,7 +1284,7 @@ class main_module
 			
 			case 'add':
 			
-				$league_id	= request_var('league_id', 0);
+				$league_id	= $request->variable('league_id', 0);
 				
 				if (!$league_id)
 				{
@@ -1337,9 +1337,9 @@ class main_module
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$league_id	= request_var('league_id', $this->sportspredictions->config['default_league']);
+				$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
 				
-				$from = request_var('from', '');
+				$from = $request->variable('from', '');
 				
 				if ($from == '')
 				{
@@ -1350,8 +1350,8 @@ class main_module
 				{
 					case 'add':
 					
-						$away_score = request_var('away_score', array(''));
-						$home_score = request_var('home_score', array(''));
+						$away_score = $request->variable('away_score', array(''));
+						$home_score = $request->variable('home_score', array(''));
 				
 						$now = time();
 						$sql = 'SELECT * FROM ' . SP_GAME_TABLE . " WHERE game_time < $now AND away_score IS NULL AND home_score IS NULL";
@@ -1378,9 +1378,9 @@ class main_module
 					
 					case 'edit':
 					
-						$game_id = request_var('game_id', 0);
-						$away_score = request_var('away_score', '');
-						$home_score = request_var('home_score', '');
+						$game_id = $request->variable('game_id', 0);
+						$away_score = $request->variable('away_score', '');
+						$home_score = $request->variable('home_score', '');
 						
 						if (!$game_id)
 						{
@@ -1424,7 +1424,7 @@ class main_module
 			
 			case 'delete':
 			
-				$game_id = request_var('game_id', 0);
+				$game_id = $request->variable('game_id', 0);
 				
 				if (!$game_id)
 				{
@@ -1461,7 +1461,7 @@ class main_module
 			break;
 		}
 		
-		$league_id	= request_var('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
 
 		$s_league_options = $this->sportspredictions->build_league_options($league_id);
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
@@ -1522,7 +1522,7 @@ class main_module
 		global $phpbb_root_path, $phpEx;
 		
 		// Set some vars
-		$action	= request_var('action', '');
+		$action	= $request->variable('action', '');
 		$action = (isset($_POST['search'])) ? 'search' : ((isset($_POST['save'])) ? 'save' : $action);
 		
 		$s_hidden_fields = '';
@@ -1534,9 +1534,9 @@ class main_module
 		{
 			case 'search':
 			
-				$league_id	= request_var('league_id', 0);
-				$user_id	= request_var('user_id', 0);
-				$game_id	= request_var('game_id', 0);
+				$league_id	= $request->variable('league_id', 0);
+				$user_id	= $request->variable('user_id', 0);
+				$game_id	= $request->variable('game_id', 0);
 				
 				if (!$league_id || (!$user_id && !$game_id))
 				{
@@ -1662,9 +1662,9 @@ class main_module
 			
 			case 'save':
 			
-				$league_id		= request_var('league_id', 0);
-				$return_user_id = request_var('user_id', 0);
-				$return_game_id = request_var('game_id', 0);
+				$league_id		= $request->variable('league_id', 0);
+				$return_user_id = $request->variable('user_id', 0);
+				$return_game_id = $request->variable('game_id', 0);
 				$prediction_ary = (isset($_POST['prediction_ary'])) ? $_POST['prediction_ary'] : false;
 
 				if (!$prediction_ary)
@@ -1736,7 +1736,7 @@ class main_module
 			break;
 		}
 		
-		$league_id	= request_var('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
 		
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
 
