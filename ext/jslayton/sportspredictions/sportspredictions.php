@@ -1040,8 +1040,8 @@ class sportspredictions
 			if (sizeof($file->error))
 			{
 				$file->remove();
-				var_dump($file->error);
-				exit;
+				//var_dump($file->error);
+				//exit;
 				trigger_error(implode('<br />', $file->error), E_USER_WARNING);
 			}
 			else
@@ -1170,8 +1170,7 @@ class sportspredictions
 			}
 			else
 			{
-				echo 'GD NOT LOADED';
-				exit;
+				trigger_error("GD NOT LOADED", E_USER_WARNING);
 			}
 		}
 		
