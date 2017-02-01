@@ -57,7 +57,7 @@ class main_listener implements EventSubscriberInterface
 		$this->user->add_lang_ext('jslayton/sportspredictions', 'sports_predictions');
 
 		$this->template->assign_vars(array(
-			'U_SPORTS_PREDICTIONS'    => $this->helper->route('sportspredictions_base_controller'),
+			'U_SPORTS_PREDICTIONS'    => $this->helper->route('jslayton_sportspredictions_base_controller'),
 		));
 	}
 }
