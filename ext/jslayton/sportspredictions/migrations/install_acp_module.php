@@ -2,7 +2,7 @@
 
 namespace jslayton\sportspredictions\migrations;
 
-class add_module extends \phpbb\db\migration\migration
+class install_acp_module extends \phpbb\db\migration\migration
 {
     /**
      * If our config variable already exists in the db
