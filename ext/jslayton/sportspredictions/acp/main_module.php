@@ -27,17 +27,17 @@ class main_module
 	{
 		//global $db, $user, $auth, $template;
         //global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
-		global $phpbb_root_path, $language, $template, $request, $config;
+		global $cache, $phpbb_container, $request, $user;
 		
 		$user->add_lang_ext('jslayton\sportspredictions', 'sports_predictions');
 		
 		//include($phpbb_root_path . "includes/sportspredictions/class_sportspredictions.$phpEx");
-		//$this->sportspredictions = new sportspredictions('admin');
+		//$sportspredictions = new sportspredictions('admin');
 		
 		// Get an instance of the admin controller
 		$sportspredictions = $phpbb_container->get('jslayton.sportspredictions');
 
-		$this->logo_path = $phpbb_root_path . $this->sportspredictions->config['logo_path'];
+		$this->logo_path = $phpbb_root_path . $sportspredictions->config['logo_path'];
 		
 		// Set up general vars
 		$action	= $request->variable('action', '');
@@ -101,14 +101,14 @@ class main_module
 	
 	function overview($id, $mode)
 	{
-		global $phpbb_root_path, $language, $template, $request, $config;
+		global $phpbb_root_path, $language, $template, $request, $config, $sportspredictions, $user;
 		
 		$sort		= $request->variable('sort', '');
 		$start		= $request->variable('start', 0);
-		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $sportspredictions->config['default_league']);
 
 		$template->assign_vars(array(
-			'LEAGUE_NAME'				=> $this->sportspredictions->leagues_array[$league_id]['league_name'],
+			'LEAGUE_NAME'				=> $sportspredictions->leagues_array[$league_id]['league_name'],
 			
 			'U_PENDING_SCORES_ACTION'	=> (str_replace('mode=overview', 'mode=scores', $this->u_action) . '&amp;action=add'),
 			'U_SORT_USERNAME'			=> $this->u_action . '&amp;sort=username',
@@ -120,8 +120,8 @@ class main_module
 			'U_PREDICT' 				=> $this->u_action . '&amp;mode=predict')
 		);
 
-		$this->sportspredictions->set_league_id($league_id);
-		$stats_array = $this->sportspredictions->build_leaderboard($sort, $this->sportspredictions->config['leaderboard_limit'], $start);
+		$sportspredictions->set_league_id($league_id);
+		$stats_array = $sportspredictions->build_leaderboard($sort, $sportspredictions->config['leaderboard_limit'], $start);
 
 		foreach($stats_array AS $lb_data)
 		{
@@ -139,25 +139,25 @@ class main_module
 		}
 		
 		/*
-		if (sizeof($this->sportspredictions->stats_array[$league_id]) > $this->sportspredictions->config['leaderboard_limit']) {
+		if (sizeof($sportspredictions->stats_array[$league_id]) > $sportspredictions->config['leaderboard_limit']) {
 			$template->assign_vars(array(
-				'PAGINATION'	=> generate_pagination($this->u_action . "&amp;sort=$sort", sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start),
-				'S_ON_PAGE'		=> on_page(sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start)
+				'PAGINATION'	=> generate_pagination($this->u_action . "&amp;sort=$sort", sizeof($sportspredictions->stats_array[$league_id]), $sportspredictions->config['leaderboard_limit'], $start),
+				'S_ON_PAGE'		=> on_page(sizeof($sportspredictions->stats_array[$league_id]), $sportspredictions->config['leaderboard_limit'], $start)
 			));
 		}
 		*/
 		
 		$pagination = $phpbb_container->get('pagination');
-		$pagination->generate_template_pagination($this->u_action . "&amp;sort=$sort", 'paginated', 'page', sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start);
+		$pagination->generate_template_pagination($this->u_action . "&amp;sort=$sort", 'paginated', 'page', sizeof($sportspredictions->stats_array[$league_id]), $sportspredictions->config['leaderboard_limit'], $start);
 		$template->assign_vars(array(
-			'S_ON_PAGE' => $pagination->on_page(sizeof($this->sportspredictions->stats_array[$league_id]), $this->sportspredictions->config['leaderboard_limit'], $start),
+			'S_ON_PAGE' => $pagination->on_page(sizeof($sportspredictions->stats_array[$league_id]), $sportspredictions->config['leaderboard_limit'], $start),
 		));
 		
-		$s_league_options = $this->sportspredictions->build_league_options($league_id);
+		$s_league_options = $sportspredictions->build_league_options($league_id);
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
 		
 		$template->assign_vars(array(
-			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($this->sportspredictions->leagues_array) >= 2) ? true : false),
+			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($sportspredictions->leagues_array) >= 2) ? true : false),
 			'S_LEAGUE_OPTIONS'	=> $s_league_options,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			
@@ -171,8 +171,8 @@ class main_module
 		{
 			$template->assign_block_vars('pending_games', array(
 				'GAMETIME'		=> $user->format_date($row['game_time']),
-				'AWAY_TEAM'		=> $this->sportspredictions->teams_array[$row['league_id']][$row['away_id']]['team_name'],
-				'HOME_TEAM'		=> $this->sportspredictions->teams_array[$row['league_id']][$row['home_id']]['team_name'])
+				'AWAY_TEAM'		=> $sportspredictions->teams_array[$row['league_id']][$row['away_id']]['team_name'],
+				'HOME_TEAM'		=> $sportspredictions->teams_array[$row['league_id']][$row['home_id']]['team_name'])
 			);
 		}
 		$db->sql_freeresult($result);
@@ -180,8 +180,7 @@ class main_module
 	
 	function configuration($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path, $language, $template, $request, $config, $sportspredictions, $user;
 		
 		// Set some vars
 		$action	= $request->variable('action', '');
@@ -198,19 +197,19 @@ class main_module
 			
 				if (confirm_box(true))
 				{
-					foreach ((array) $this->sportspredictions->leagues_array AS $league_id => $league_info)
+					foreach ((array) $sportspredictions->leagues_array AS $league_id => $league_info)
 					{
 						if ($league_info['league_logo'] != '')
 						{
 							if ($league_info['league_logo_tn'] != '')
 							{
-								if (file_exists($phpbb_root_path . $this->sportspredictions->config['logo_path'] . '/' . $league_info['league_logo_tn']))
+								if (file_exists($phpbb_root_path . $sportspredictions->config['logo_path'] . '/' . $league_info['league_logo_tn']))
 								{
-									@unlink($phpbb_root_path . $this->sportspredictions->config['logo_path'] . '/' . $league_info['league_logo_tn']);
+									@unlink($phpbb_root_path . $sportspredictions->config['logo_path'] . '/' . $league_info['league_logo_tn']);
 								}
 							}
 								
-							$thumbnail = $this->sportspredictions->create_thumbnail($phpbb_root_path . $this->sportspredictions->config['logo_path'] . '/' . $league_info['league_logo']);
+							$thumbnail = $sportspredictions->create_thumbnail($phpbb_root_path . $sportspredictions->config['logo_path'] . '/' . $league_info['league_logo']);
 
 							if ($thumbnail)
 							{
@@ -228,19 +227,19 @@ class main_module
 					}
 					$cache->destroy('sql', SP_LEAGUE_TABLE);
 					
-					foreach ((array) $this->sportspredictions->teams_array['id_ref'] AS $team_id => $team_info)
+					foreach ((array) $sportspredictions->teams_array['id_ref'] AS $team_id => $team_info)
 					{
 						if ($team_info['team_logo'] != '')
 						{
 							if ($team_info['team_logo_tn'] != '')
 							{
-								if (file_exists($phpbb_root_path . $this->sportspredictions->config['logo_path'] . '/' . $team_info['team_logo_tn']))
+								if (file_exists($phpbb_root_path . $sportspredictions->config['logo_path'] . '/' . $team_info['team_logo_tn']))
 								{
-									@unlink($phpbb_root_path . $this->sportspredictions->config['logo_path'] . '/' . $team_info['team_logo_tn']);
+									@unlink($phpbb_root_path . $sportspredictions->config['logo_path'] . '/' . $team_info['team_logo_tn']);
 								}
 							}
 								
-							$thumbnail = $this->sportspredictions->create_thumbnail($phpbb_root_path . $this->sportspredictions->config['logo_path'] . '/' . $team_info['team_logo']);
+							$thumbnail = $sportspredictions->create_thumbnail($phpbb_root_path . $sportspredictions->config['logo_path'] . '/' . $team_info['team_logo']);
 
 							if ($thumbnail)
 							{
@@ -327,19 +326,19 @@ class main_module
 			break;
 		}
 		
-		$s_league_options = $this->sportspredictions->build_league_options($this->sportspredictions->config['default_league']);
+		$s_league_options = $sportspredictions->build_league_options($sportspredictions->config['default_league']);
 		
 		$template->assign_vars(array(
 			'S_LEAGUE_OPTIONS'				=> $s_league_options,
 
-			'LEADERBOARD_LIMIT'				=> $this->sportspredictions->config['leaderboard_limit'],
-			'UPCOMING_GAMES_LIMIT'			=> $this->sportspredictions->config['upcoming_games_limit'],
-			'EXACT_PREDICTION_POINTS'		=> $this->sportspredictions->config['exact_prediction_points'],
-			'CORRECT_PREDICTION_POINTS'		=> $this->sportspredictions->config['correct_prediction_points'],
-			'INCORRECT_PREDICTION_POINTS'	=> $this->sportspredictions->config['incorrect_prediction_points'],
-			'LOGO_PATH'						=> $this->sportspredictions->config['logo_path'],
-			'LOGO_MAX_THUMBNAIL_WIDTH'		=> $this->sportspredictions->config['logo_max_thumbnail_width'],
-			'LOGO_MAX_THUMBNAIL_HEIGHT'		=> $this->sportspredictions->config['logo_max_thumbnail_height'],
+			'LEADERBOARD_LIMIT'				=> $sportspredictions->config['leaderboard_limit'],
+			'UPCOMING_GAMES_LIMIT'			=> $sportspredictions->config['upcoming_games_limit'],
+			'EXACT_PREDICTION_POINTS'		=> $sportspredictions->config['exact_prediction_points'],
+			'CORRECT_PREDICTION_POINTS'		=> $sportspredictions->config['correct_prediction_points'],
+			'INCORRECT_PREDICTION_POINTS'	=> $sportspredictions->config['incorrect_prediction_points'],
+			'LOGO_PATH'						=> $sportspredictions->config['logo_path'],
+			'LOGO_MAX_THUMBNAIL_WIDTH'		=> $sportspredictions->config['logo_max_thumbnail_width'],
+			'LOGO_MAX_THUMBNAIL_HEIGHT'		=> $sportspredictions->config['logo_max_thumbnail_height'],
 			
 			'U_REBUILD_THUMBNAILS'	=> $this->u_action . '&amp;action=rebuild_thumbs',
 			'U_ACTION'				=> $this->u_action)
@@ -349,8 +348,7 @@ class main_module
 	
 	function leagues($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path, $language, $template, $request, $config, $sportspredictions, $user;
 		
 		// Set some vars
 		$action	= $request->variable('action', '');
@@ -380,11 +378,11 @@ class main_module
 					'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 					'S_EDIT_LEAGUE'		=> true,
 					
-					'LEAGUE_NAME'		=> (isset($league_id)) ? $this->sportspredictions->leagues_array[$league_id]['league_name'] : '',
-					'LEAGUE_LOGO'		=> ((isset($league_id)) ? ((!empty($this->sportspredictions->leagues_array[$league_id]['league_logo'])) ? $this->logo_path . '/' . $this->sportspredictions->leagues_array[$league_id]['league_logo'] : '') : ''),
-					'SCORING_STYLE'		=> (isset($league_id)) ? $this->sportspredictions->leagues_array[$league_id]['scoring_style'] : '',
-					'POINTDIFF_AVERAGE'	=> (isset($league_id)) ? $this->sportspredictions->leagues_array[$league_id]['pointdiff_average'] : '',
-					'ACTIVE'			=> (isset($league_id)) ? $this->sportspredictions->leagues_array[$league_id]['active'] : '',
+					'LEAGUE_NAME'		=> (isset($league_id)) ? $sportspredictions->leagues_array[$league_id]['league_name'] : '',
+					'LEAGUE_LOGO'		=> ((isset($league_id)) ? ((!empty($sportspredictions->leagues_array[$league_id]['league_logo'])) ? $this->logo_path . '/' . $sportspredictions->leagues_array[$league_id]['league_logo'] : '') : ''),
+					'SCORING_STYLE'		=> (isset($league_id)) ? $sportspredictions->leagues_array[$league_id]['scoring_style'] : '',
+					'POINTDIFF_AVERAGE'	=> (isset($league_id)) ? $sportspredictions->leagues_array[$league_id]['pointdiff_average'] : '',
+					'ACTIVE'			=> (isset($league_id)) ? $sportspredictions->leagues_array[$league_id]['active'] : '',
 					
 					'U_BACK'			=> $this->u_action,
 					'U_ACTION'			=> $this->u_action)
@@ -422,14 +420,14 @@ class main_module
 				{
 					if ($remove_logo)
 					{
-						$this->sportspredictions->remove_logo('league', $league_id);
+						$sportspredictions->remove_logo('league', $league_id);
 						
 						$sql_ary['league_logo']		= NULL;
 						$sql_ary['league_logo_tn']	= NULL;
 					}
 					elseif ($_FILES['league_logo']['name'] != '')
 					{
-						$logo = $this->sportspredictions->upload_logo('league_logo', 'L_' . $league_id . '_');
+						$logo = $sportspredictions->upload_logo('league_logo', 'L_' . $league_id . '_');
 						if ($logo)
 						{
 							$sql_ary['league_logo'] = $logo['logo'];
@@ -442,7 +440,7 @@ class main_module
 								$sql_ary['league_logo_tn'] = NULL;
 							}
 							
-							$this->sportspredictions->remove_logo('league', $league_id);
+							$sportspredictions->remove_logo('league', $league_id);
 						}
 					}
 					
@@ -451,7 +449,7 @@ class main_module
 							WHERE league_id = ' . $league_id;
 					$db->sql_query($sql);
 					
-					if ($league_id == $this->sportspredictions->config['default_league'] && $active == 0)
+					if ($league_id == $sportspredictions->config['default_league'] && $active == 0)
 					{
 						unset($sql_ary);
 						$sql = 'SELECT league_id FROM ' . SP_LEAGUE_TABLE . ' WHERE active = 1 ORDER BY league_id DESC LIMIT 1';
@@ -473,7 +471,7 @@ class main_module
 
 					if ($_FILES['league_logo']['name'] != '')
 					{
-						$logo = $this->sportspredictions->upload_logo('league_logo', 'L_' . $league_id . '_');
+						$logo = $sportspredictions->upload_logo('league_logo', 'L_' . $league_id . '_');
 						if ($logo)
 						{
 							$sql_ary = array();
@@ -487,7 +485,7 @@ class main_module
 								$sql_ary['league_logo_tn'] = NULL;
 							}
 							
-							$this->sportspredictions->remove_logo('league', $league_id);
+							$sportspredictions->remove_logo('league', $league_id);
 						}
 					}
 					
@@ -517,7 +515,7 @@ class main_module
 					$sql = 'DELETE FROM ' . SP_LEAGUE_TABLE . " WHERE league_id = $league_id";
 					$db->sql_query($sql);
 					
-					$this->sportspredictions->remove_logo('league', $league_id);
+					$sportspredictions->remove_logo('league', $league_id);
 
 					$cache->destroy('sql', SP_LEAGUE_TABLE);
 					$cache->destroy('_sp_stats_array_' . $league_id);
@@ -541,7 +539,7 @@ class main_module
 			'U_ACTION'		=> $this->u_action)
 		);
 
-		foreach ($this->sportspredictions->leagues_array AS $league_id => $league_data)
+		foreach ($sportspredictions->leagues_array AS $league_id => $league_data)
 		{
 			$template->assign_block_vars('leagues', array(
 				'LEAGUE_ID'				=> $league_id,
@@ -558,8 +556,7 @@ class main_module
 	
 	function teams($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path, $language, $template, $request, $config, $sportspredictions, $user;
 		
 		// Set some vars
 		$action	= $request->variable('action', '');
@@ -592,16 +589,16 @@ class main_module
 					trigger_error($user->lang['ACP_NO_LEAGUE'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$s_league_options = $this->sportspredictions->build_league_options($league_id);
+				$s_league_options = $sportspredictions->build_league_options($league_id);
 				
 				$template->assign_vars(array(
 					'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 					'S_LEAGUE_OPTIONS'	=> $s_league_options,
 					'S_EDIT_TEAM'		=> true,
 					
-					'TEAM_NAME'			=> (isset($team_id)) ? $this->sportspredictions->teams_array[$league_id][$team_id]['team_name'] : '',
-					'TEAM_LOGO'			=> ((isset($team_id)) ? ((!empty($this->sportspredictions->teams_array[$league_id][$team_id]['team_logo'])) ? $this->logo_path . '/' . $this->sportspredictions->teams_array[$league_id][$team_id]['team_logo'] : '') : ''),
-					'SHOW_RESULTS'		=> (isset($team_id)) ? $this->sportspredictions->teams_array[$league_id][$team_id]['show_results'] : '',
+					'TEAM_NAME'			=> (isset($team_id)) ? $sportspredictions->teams_array[$league_id][$team_id]['team_name'] : '',
+					'TEAM_LOGO'			=> ((isset($team_id)) ? ((!empty($sportspredictions->teams_array[$league_id][$team_id]['team_logo'])) ? $this->logo_path . '/' . $sportspredictions->teams_array[$league_id][$team_id]['team_logo'] : '') : ''),
+					'SHOW_RESULTS'		=> (isset($team_id)) ? $sportspredictions->teams_array[$league_id][$team_id]['show_results'] : '',
 					
 					'U_BACK'			=> $this->u_action,
 					'U_ACTION'			=> $this->u_action)
@@ -620,7 +617,7 @@ class main_module
 					trigger_error($user->lang['ACP_NO_LEAGUE'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$s_league_options = $this->sportspredictions->build_league_options($league_id);
+				$s_league_options = $sportspredictions->build_league_options($league_id);
 				
 				$template->assign_vars(array(
 					'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
@@ -664,14 +661,14 @@ class main_module
 				{
 					if ($remove_logo)
 					{
-						$this->sportspredictions->remove_logo('team', $team_id);
+						$sportspredictions->remove_logo('team', $team_id);
 						
 						$sql_ary['team_logo']		= NULL;
 						$sql_ary['team_logo_tn']	= NULL;
 					}
 					elseif ($_FILES['team_logo']['name'] != '')
 					{
-						$logo = $this->sportspredictions->upload_logo('team_logo', 'T_' . $team_id . '_');
+						$logo = $sportspredictions->upload_logo('team_logo', 'T_' . $team_id . '_');
 						if ($logo)
 						{
 							$sql_ary['team_logo'] = $logo['logo'];
@@ -684,7 +681,7 @@ class main_module
 								$sql_ary['team_logo_tn'] = NULL;
 							}
 							
-							$this->sportspredictions->remove_logo('team', $team_id);
+							$sportspredictions->remove_logo('team', $team_id);
 						}
 					}
 					
@@ -702,7 +699,7 @@ class main_module
 					
 					if ($_FILES['team_logo']['name'] != '')
 					{
-						$logo = $this->sportspredictions->upload_logo('team_logo', 'T_' . $team_id . '_');
+						$logo = $sportspredictions->upload_logo('team_logo', 'T_' . $team_id . '_');
 						if ($logo)
 						{
 							$sql_ary = array();
@@ -716,7 +713,7 @@ class main_module
 								$sql_ary['team_logo_tn'] = NULL;
 							}
 							
-							$this->sportspredictions->remove_logo('team', $team_id);
+							$sportspredictions->remove_logo('team', $team_id);
 						}
 					}
 					
@@ -793,7 +790,7 @@ class main_module
 					$sql = 'DELETE FROM ' . SP_TEAM_TABLE . " WHERE league_id = $league_id AND team_id = $team_id";
 					$db->sql_query($sql);
 					
-					$this->sportspredictions->remove_logo('team', $team_id);
+					$sportspredictions->remove_logo('team', $team_id);
 					
 					$_tables_to_uncache[] = SP_TEAM_TABLE;
 					
@@ -853,29 +850,29 @@ class main_module
 			break;
 		}
 		
-		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $sportspredictions->config['default_league']);
 		
-		$s_league_options = $this->sportspredictions->build_league_options($league_id);
+		$s_league_options = $sportspredictions->build_league_options($league_id);
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
 		
 		$template->assign_vars(array(
 			'S_LEAGUE_OPTIONS'	=> $s_league_options,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
-			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($this->sportspredictions->leagues_array) >= 2) ? true : false),
+			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($sportspredictions->leagues_array) >= 2) ? true : false),
 			
-			'LEAGUE_NAME'		=> $this->sportspredictions->leagues_array[$league_id]['league_name'],
+			'LEAGUE_NAME'		=> $sportspredictions->leagues_array[$league_id]['league_name'],
 			'TEAM_COUNT'		=> $team_count,
 			'USER_TIMEZONE'		=> $user->lang['tz_zones'][rtrim(trim($user->data['user_timezone'], '0'), '.')],
 			
 			'U_ACTION'			=> $this->u_action)
 		);
 			
-		foreach ((array) $this->sportspredictions->teams_array[$league_id] AS $team_id => $team_data)
+		foreach ((array) $sportspredictions->teams_array[$league_id] AS $team_id => $team_data)
 		{
 			$template->assign_block_vars('teams', array(
 				'TEAM_NAME'				=> $team_data['team_name'],
 				'TEAM_LOGO_THUMBNAIL'	=> ((!empty($team_data['team_logo_tn'])) ? $this->logo_path . '/' . $team_data['team_logo_tn'] : ''),
-				'TEAM_RECORD'			=> $this->sportspredictions->get_team_record($team_id),
+				'TEAM_RECORD'			=> $sportspredictions->get_team_record($team_id),
 				
 				'U_EDIT'				=> $this->u_action . '&amp;action=edit&amp;league_id=' . $league_id . '&amp;team_id=' . $team_id,
 				'U_DELETE'				=> $this->u_action . '&amp;action=delete&amp;league_id=' . $league_id . '&amp;team_id=' . $team_id)
@@ -887,8 +884,7 @@ class main_module
 	
 	function games($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path, $language, $template, $request, $config, $sportspredictions, $user;
 		
 		// Set some vars
 		$action	= $request->variable('action', '');
@@ -932,22 +928,22 @@ class main_module
 
 				if (isset($game_info))
 				{
-					$gametime_options = $this->sportspredictions->build_gametime_options($game_info['game_time']);
+					$gametime_options = $sportspredictions->build_gametime_options($game_info['game_time']);
 				}
 				else
 				{
-					$gametime_options = $this->sportspredictions->build_gametime_options(time());
+					$gametime_options = $sportspredictions->build_gametime_options(time());
 				}
 
 				if (isset($game_info))
 				{
-					$s_away_team_options = $this->sportspredictions->build_team_options($league_id, $game_info['away_id']);
-					$s_home_team_options = $this->sportspredictions->build_team_options($league_id, $game_info['home_id']);
+					$s_away_team_options = $sportspredictions->build_team_options($league_id, $game_info['away_id']);
+					$s_home_team_options = $sportspredictions->build_team_options($league_id, $game_info['home_id']);
 				}
 				else
 				{
-					$s_away_team_options = $this->sportspredictions->build_team_options($league_id);
-					$s_home_team_options = $this->sportspredictions->build_team_options($league_id);
+					$s_away_team_options = $sportspredictions->build_team_options($league_id);
+					$s_home_team_options = $sportspredictions->build_team_options($league_id);
 				}
 
 				$template->assign_vars(array(
@@ -983,16 +979,16 @@ class main_module
 					trigger_error($user->lang['ACP_NO_LEAGUE'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$s_league_options = $this->sportspredictions->build_league_options($league_id);
+				$s_league_options = $sportspredictions->build_league_options($league_id);
 				
 				for($i = 0; $i < 5; $i++)
 				{
 					$template->assign_block_vars('multiadd', array());
 				}
 
-				$gametime_options 		= $this->sportspredictions->build_gametime_options(time());
-				$s_away_team_options	= $this->sportspredictions->build_team_options($league_id);
-				$s_home_team_options	= $this->sportspredictions->build_team_options($league_id);
+				$gametime_options 		= $sportspredictions->build_gametime_options(time());
+				$s_away_team_options	= $sportspredictions->build_team_options($league_id);
+				$s_home_team_options	= $sportspredictions->build_team_options($league_id);
 				
 				$template->assign_vars(array(
 					'USER_TIMEZONE'				=> $user->lang['tz_zones'][rtrim(trim($user->data['user_timezone'], '0'), '.')],
@@ -1086,7 +1082,7 @@ class main_module
 				}
 				
 				$cache->destroy('sql', SP_GAME_TABLE);
-				$cache->destroy('_sp_stats_array_' . $this->sportspredictions->get_league_id());
+				$cache->destroy('_sp_stats_array_' . $sportspredictions->get_league_id());
 				trigger_error($user->lang[$lang] . adm_back_link($this->u_action . '&amp;league_id=' . $league_id));
 				
 			break;
@@ -1189,17 +1185,17 @@ class main_module
 			break;
 		}
 
-		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $sportspredictions->config['default_league']);
 		
-		$s_league_options = $this->sportspredictions->build_league_options($league_id);
+		$s_league_options = $sportspredictions->build_league_options($league_id);
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
 
-		$team_count = sizeof($this->sportspredictions->teams_array[$league_id]);
+		$team_count = sizeof($sportspredictions->teams_array[$league_id]);
 		
 		$template->assign_vars(array(
 			'S_LEAGUE_OPTIONS'	=> $s_league_options,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
-			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($this->sportspredictions->leagues_array) >= 2) ? true : false),
+			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($sportspredictions->leagues_array) >= 2) ? true : false),
 			
 			'TEAM_COUNT'		=> $team_count,
 			'USER_TIMEZONE'		=> $user->lang['tz_zones'][rtrim(trim($user->data['user_timezone'], '0'), '.')],
@@ -1213,8 +1209,8 @@ class main_module
 		{
 			$template->assign_block_vars('games', array(
 				'GAMETIME'		=> $user->format_date($row['game_time']),
-				'AWAY_TEAM'		=> $this->sportspredictions->teams_array['id_ref'][$row['away_id']]['team_name'],
-				'HOME_TEAM'		=> $this->sportspredictions->teams_array['id_ref'][$row['home_id']]['team_name'],
+				'AWAY_TEAM'		=> $sportspredictions->teams_array['id_ref'][$row['away_id']]['team_name'],
+				'HOME_TEAM'		=> $sportspredictions->teams_array['id_ref'][$row['home_id']]['team_name'],
 				'BONUS'			=> (($row['bonus'] == 1) ? $user->lang['YES'] : $user->lang['NO']),
 				
 				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;league_id=' . $league_id . '&amp;game_id=' . $row['game_id'],
@@ -1226,8 +1222,7 @@ class main_module
 	
 	function scores($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path, $language, $template, $request, $config, $sportspredictions, $user;
 		
 		// Set some vars
 		$action	= $request->variable('action', '');
@@ -1269,8 +1264,8 @@ class main_module
 					'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 
 					'GAMETIME'			=> $user->format_date($game_info['game_time']),
-					'AWAY_TEAM'			=> $this->sportspredictions->teams_array[$league_id][$game_info['away_id']]['team_name'],
-					'HOME_TEAM'			=> $this->sportspredictions->teams_array[$league_id][$game_info['home_id']]['team_name'],
+					'AWAY_TEAM'			=> $sportspredictions->teams_array[$league_id][$game_info['away_id']]['team_name'],
+					'HOME_TEAM'			=> $sportspredictions->teams_array[$league_id][$game_info['home_id']]['team_name'],
 					'AWAY_SCORE'		=> $game_info['away_score'],
 					'HOME_SCORE'		=> $game_info['home_score'],
 					
@@ -1320,8 +1315,8 @@ class main_module
 					$template->assign_block_vars('pending_games', array(
 						'GAME_ID'		=> $row['game_id'],
 						'GAMETIME'		=> $user->format_date($row['game_time']),
-						'AWAY_TEAM'		=> $this->sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
-						'HOME_TEAM'		=> $this->sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'])
+						'AWAY_TEAM'		=> $sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
+						'HOME_TEAM'		=> $sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'])
 					);
 				}
 				$db->sql_freeresult($result);
@@ -1337,7 +1332,7 @@ class main_module
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
+				$league_id	= $request->variable('league_id', $sportspredictions->config['default_league']);
 				
 				$from = $request->variable('from', '');
 				
@@ -1461,13 +1456,13 @@ class main_module
 			break;
 		}
 		
-		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $sportspredictions->config['default_league']);
 
-		$s_league_options = $this->sportspredictions->build_league_options($league_id);
+		$s_league_options = $sportspredictions->build_league_options($league_id);
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
 		
 		$template->assign_vars(array(
-			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($this->sportspredictions->leagues_array) >= 2) ? true : false),
+			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($sportspredictions->leagues_array) >= 2) ? true : false),
 			'S_LEAGUE_OPTIONS'	=> $s_league_options,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			
@@ -1481,8 +1476,8 @@ class main_module
 		{
 			$template->assign_block_vars('pending_games', array(
 				'GAMETIME'		=> $user->format_date($row['game_time']),
-				'AWAY_TEAM'		=> $this->sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
-				'HOME_TEAM'		=> $this->sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'])
+				'AWAY_TEAM'		=> $sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
+				'HOME_TEAM'		=> $sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'])
 			);
 		}
 		$db->sql_freeresult($result);
@@ -1493,8 +1488,8 @@ class main_module
 		{
 			$template->assign_block_vars('upcoming_games', array(
 				'GAMETIME'		=> $user->format_date($row['game_time']),
-				'AWAY_TEAM'		=> $this->sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
-				'HOME_TEAM'		=> $this->sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'])
+				'AWAY_TEAM'		=> $sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
+				'HOME_TEAM'		=> $sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'])
 			);
 		}
 		$db->sql_freeresult($result);
@@ -1505,8 +1500,8 @@ class main_module
 		{
 			$template->assign_block_vars('scored_games', array(
 				'GAMETIME'		=> $user->format_date($row['game_time']),
-				'AWAY_TEAM'		=> $this->sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
-				'HOME_TEAM'		=> $this->sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'],
+				'AWAY_TEAM'		=> $sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
+				'HOME_TEAM'		=> $sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'],
 				'AWAY_SCORE'	=> $row['away_score'],
 				'HOME_SCORE'	=> $row['home_score'],
 				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;league_id=' . $league_id . '&amp;game_id=' . $row['game_id'],
@@ -1518,8 +1513,7 @@ class main_module
 	
 	function predictions($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path, $language, $template, $request, $config, $sportspredictions, $user;
 		
 		// Set some vars
 		$action	= $request->variable('action', '');
@@ -1578,8 +1572,8 @@ class main_module
 							'GAME_ID'			=> $row['game_id'],
 							'USER_ID'			=> $user_id,
 							'GAMETIME'			=> $user->format_date($row['game_time']),
-							'AWAY_TEAM'			=> $this->sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
-							'HOME_TEAM'			=> $this->sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'],
+							'AWAY_TEAM'			=> $sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
+							'HOME_TEAM'			=> $sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'],
 							'AWAY_SCORE'		=> $row['away_score'],
 							'HOME_SCORE'		=> $row['home_score'],
 							'AWAY_PREDICTION'	=> $row['away_prediction'],
@@ -1631,10 +1625,10 @@ class main_module
 					$template->assign_block_vars('full_predictions', array(
 						'GAME_ID'				=> $row['game_id'],
 						'USER_ID'				=> $row['user_id'],
-						'USERNAME'				=> $this->sportspredictions->username_array[$row['user_id']],
+						'USERNAME'				=> $sportspredictions->username_array[$row['user_id']],
 						'GAMETIME'				=> $user->format_date($row['game_time']),
-						'AWAY_TEAM'				=> $this->sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
-						'HOME_TEAM'				=> $this->sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'],
+						'AWAY_TEAM'				=> $sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'],
+						'HOME_TEAM'				=> $sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'],
 						'AWAY_SCORE'			=> $row['away_score'],
 						'HOME_SCORE'			=> $row['home_score'],
 						'AWAY_PREDICTION'		=> $row['away_prediction'],
@@ -1651,7 +1645,7 @@ class main_module
 					'S_BY_USERID'				=> (($user_id) ? true : false),
 					'S_HIDDEN_FIELDS'			=> $s_hidden_fields,
 					
-					'SP_USERNAME'				=> (($user_id) ? $this->sportspredictions->username_array[$user_id] : ''),
+					'SP_USERNAME'				=> (($user_id) ? $sportspredictions->username_array[$user_id] : ''),
 					
 					'U_ACTION'					=> $this->u_action)
 				);
@@ -1672,7 +1666,7 @@ class main_module
 					trigger_error($user->lang['ACP_SP_VIEW_PREDICTIONS_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				
-				$db_predictions = $this->sportspredictions->get_predictions();
+				$db_predictions = $sportspredictions->get_predictions();
 
 				$sql_multi_ary = array();
 				foreach($prediction_ary AS $game_id => $user_info)
@@ -1736,14 +1730,14 @@ class main_module
 			break;
 		}
 		
-		$league_id	= $request->variable('league_id', $this->sportspredictions->config['default_league']);
+		$league_id	= $request->variable('league_id', $sportspredictions->config['default_league']);
 		
 		$s_hidden_fields .= '<input type="hidden" name="league_id" value="' . $league_id . '" />';
 
-		$s_league_options = $this->sportspredictions->build_league_options($league_id);
+		$s_league_options = $sportspredictions->build_league_options($league_id);
 
 		$s_user_options = '<option value="0">--</option>';
-		foreach($this->sportspredictions->username_array AS $user_id => $username)
+		foreach($sportspredictions->username_array AS $user_id => $username)
 		{
 			$s_user_options .= '<option value="' . $user_id . '">' . $username . '</option>';
 		}
@@ -1772,12 +1766,12 @@ class main_module
 		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$s_game_options .= '<option value="' . $row['game_id'] . '">' . $this->sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'] . ' @ ' . $this->sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'] . ' (' . $user->format_date($row['game_time']) . ')</option>';
+			$s_game_options .= '<option value="' . $row['game_id'] . '">' . $sportspredictions->teams_array[$league_id][$row['away_id']]['team_name'] . ' @ ' . $sportspredictions->teams_array[$league_id][$row['home_id']]['team_name'] . ' (' . $user->format_date($row['game_time']) . ')</option>';
 		}
 		$db->sql_freeresult($result);
 
 		$template->assign_vars(array(
-			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($this->sportspredictions->leagues_array) >= 2) ? true : false),
+			'S_SHOW_LEAGUE_BOX'	=> ((sizeof($sportspredictions->leagues_array) >= 2) ? true : false),
 			'S_LEAGUE_OPTIONS'	=> $s_league_options,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			'S_USER_OPTIONS'	=> $s_user_options,
